@@ -253,17 +253,18 @@ if calc:
             instr = instr_map.get((prev_id, node_id), "המשך ישר")
             verb  = f"<strong>{name}</strong>"
 
-        instr_html = f'<div class="step-instruction">↩ {instr}</div>' if instr else ""
-
-        steps_html += f"""
-        <div class="step-row">
-          <div class="step-icon">{icon}</div>
-          <div>
-            <div class="step-name">{verb}</div>
-            {instr_html}
-            <div class="step-label">{label}</div>
-          </div>
-        </div>"""
+        instr_html = f'<div class="step-instruction">&#x21A9; {instr}</div>' if instr else ""
+        # חשוב: אין רווחים מובילים — מונע פירוש כ-code block ב-Markdown
+        steps_html += (
+            '<div class="step-row">'
+            f'<div class="step-icon">{icon}</div>'
+            '<div>'
+            f'<div class="step-name">{verb}</div>'
+            f'{instr_html}'
+            f'<div class="step-label">{label}</div>'
+            '</div>'
+            '</div>'
+        )
 
     steps_html += '</div>'
     st.markdown(steps_html, unsafe_allow_html=True)
