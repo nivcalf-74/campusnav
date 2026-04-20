@@ -232,6 +232,17 @@ select:focus {
   color: var(--gray-400);
   font-size: 0.8rem;
 }
+.floor-filter {
+  display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;
+}
+.floor-chip {
+  padding: 4px 12px; border-radius: 20px;
+  border: 1.5px solid var(--gray-200); background: var(--white);
+  font-family: var(--font); font-size: 0.78rem; font-weight: 600;
+  color: var(--gray-600); cursor: pointer; transition: all 0.15s;
+}
+.floor-chip:hover { border-color: var(--navy); color: var(--navy); }
+.floor-chip.active { background: var(--navy); border-color: var(--navy); color: white; }
 
 .swap-btn {
   display: flex;
@@ -487,6 +498,7 @@ footer {
       <!-- FROM -->
       <div class="field-group">
         <div class="field-label"><span>📍</span> נקודת מוצא</div>
+        <div class="floor-filter" id="from-floors"></div>
         <div class="select-wrapper">
           <select id="from-select" onchange="clearResults()"></select>
           <span class="select-arrow">▼</span>
@@ -501,6 +513,7 @@ footer {
       <!-- TO -->
       <div class="field-group">
         <div class="field-label"><span>🎯</span> יעד</div>
+        <div class="floor-filter" id="to-floors"></div>
         <div class="select-wrapper">
           <select id="to-select" onchange="clearResults()"></select>
           <span class="select-arrow">▼</span>
@@ -576,33 +589,73 @@ function typeIcon(t) {
   return map[t] || '📍';
 }
 
-function populateSelects() {
-  const from = document.getElementById('from-select');
-  const to   = document.getElementById('to-select');
+const FLOOR_ORDER = ['-3','-2','-1','0','1','2','3','כל הקומות'];
+const activeFloor = { from: 'all', to: 'all' };
+
+function buildFloorChips(which) {
+  const el = document.getElementById(`${which}-floors`);
+  const floors = FLOOR_ORDER.filter(f => Object.values(NODES).some(n => n.floor === f));
+  el.innerHTML = '';
+  // "הכל" chip
+  const allChip = document.createElement('button');
+  allChip.className = 'floor-chip active';
+  allChip.textContent = 'הכל';
+  allChip.onclick = () => filterFloor(which, 'all', allChip);
+  el.appendChild(allChip);
+  // floor chips
+  for(const f of floors) {
+    const chip = document.createElement('button');
+    chip.className = 'floor-chip';
+    chip.textContent = floorLabel(f);
+    chip.onclick = () => filterFloor(which, f, chip);
+    el.appendChild(chip);
+  }
+}
+
+function filterFloor(which, floor, chipEl) {
+  activeFloor[which] = floor;
+  // update chip styles
+  const container = document.getElementById(`${which}-floors`);
+  container.querySelectorAll('.floor-chip').forEach(c => c.classList.remove('active'));
+  chipEl.classList.add('active');
+  // rebuild select
+  fillSelect(which, floor);
+  clearResults();
+}
+
+function fillSelect(which, floorFilter) {
+  const sel = document.getElementById(`${which}-select`);
+  const current = sel.value;
+  sel.innerHTML = '';
   const byFloor = {};
   for(const [id, n] of Object.entries(NODES)) {
+    if(floorFilter !== 'all' && n.floor !== floorFilter) continue;
     if(!byFloor[n.floor]) byFloor[n.floor] = [];
     byFloor[n.floor].push({id, ...n});
   }
-  const floorOrder = ['-3','-2','-1','0','1','2','3','כל הקומות'];
-  [from, to].forEach(sel => {
-    sel.innerHTML = '';
-    for(const fl of floorOrder) {
-      if(!byFloor[fl]) continue;
-      const og = document.createElement('optgroup');
-      og.label = floorLabel(fl);
-      for(const n of byFloor[fl]) {
-        const opt = document.createElement('option');
-        opt.value = n.id;
-        opt.textContent = `${typeIcon(n.type)} ${n.name}`;
-        og.appendChild(opt);
-      }
-      sel.appendChild(og);
+  for(const fl of FLOOR_ORDER) {
+    if(!byFloor[fl]) continue;
+    const og = document.createElement('optgroup');
+    og.label = floorLabel(fl);
+    for(const n of byFloor[fl]) {
+      const opt = document.createElement('option');
+      opt.value = n.id;
+      opt.textContent = `${typeIcon(n.type)} ${n.name}`;
+      og.appendChild(opt);
     }
-  });
-  // defaults
-  setSelectById(from, '17');
-  setSelectById(to,   '47');
+    sel.appendChild(og);
+  }
+  // restore selection if still available, else pick first
+  if([...sel.options].some(o => o.value === current)) sel.value = current;
+}
+
+function populateSelects() {
+  buildFloorChips('from');
+  buildFloorChips('to');
+  fillSelect('from', 'all');
+  fillSelect('to', 'all');
+  setSelectById(document.getElementById('from-select'), '17');
+  setSelectById(document.getElementById('to-select'), '47');
 }
 
 function setSelectById(sel, id) {
