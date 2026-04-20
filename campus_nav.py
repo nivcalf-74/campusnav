@@ -61,7 +61,8 @@ def build_graph(nodes_df, edges_df, weight="time"):
             distance=float(row["distance"]),
             time=float(row["time"]),
             weight=float(row[weight]),          # המשקל הפעיל לדייקסטרה
-            source_type=row["source_type"]
+            source_type=row["source_type"],
+            instruction=row.get("instruction", "המשך ישר")
         )
 
     return G
