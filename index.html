@@ -8,11 +8,9 @@
 <style>
 :root {
   --red: #C8102E;
-  --red-dark: #9e0b23;
   --navy: #0f1b35;
   --navy-light: #1a2d54;
   --blue: #1d4ed8;
-  --blue-light: #3b82f6;
   --gray-50: #f8fafc;
   --gray-100: #f1f5f9;
   --gray-200: #e2e8f0;
@@ -24,442 +22,111 @@
   --font: 'Heebo', sans-serif;
   --radius: 14px;
   --radius-sm: 8px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.08);
   --shadow-lg: 0 12px 40px rgba(0,0,0,0.14);
 }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font); background:var(--gray-50); color:var(--gray-800); min-height:100vh; direction:rtl; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* HEADER */
+header { background:var(--navy); position:sticky; top:0; z-index:100; box-shadow:0 2px 20px rgba(0,0,0,0.3); }
+.header-inner { max-width:900px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; }
+.header-brand { display:flex; align-items:center; gap:14px; }
+.header-logo { height:44px; filter:brightness(0) invert(1); opacity:0.95; }
+.header-divider { width:1px; height:32px; background:rgba(255,255,255,0.2); }
+.header-title { color:var(--white); font-size:1.05rem; font-weight:600; }
+.header-subtitle { color:rgba(255,255,255,0.5); font-size:0.75rem; }
+.header-badge { background:var(--red); color:white; font-size:0.7rem; font-weight:700; padding:4px 12px; border-radius:20px; }
 
-body {
-  font-family: var(--font);
-  background: var(--gray-50);
-  color: var(--gray-800);
-  min-height: 100vh;
-  direction: rtl;
-}
+/* HERO */
+.hero { background:linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 60%, #1e3a6e 100%); padding:52px 24px 76px; text-align:center; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:-60px; right:-60px; width:300px; height:300px; background:radial-gradient(circle, rgba(200,16,46,0.15) 0%, transparent 70%); border-radius:50%; }
+.hero-icon { font-size:2.8rem; margin-bottom:12px; display:block; animation:float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.hero h1 { font-size:2.2rem; font-weight:900; color:var(--white); margin-bottom:8px; }
+.hero h1 span { color:#ff6b7a; }
+.hero p { color:rgba(255,255,255,0.6); font-size:0.95rem; font-weight:300; }
 
-/* ── HEADER ── */
-header {
-  background: var(--navy);
-  padding: 0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.3);
-}
-.header-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 14px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.header-brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.header-logo {
-  height: 44px;
-  filter: brightness(0) invert(1);
-  opacity: 0.95;
-}
-.header-divider {
-  width: 1px;
-  height: 32px;
-  background: rgba(255,255,255,0.2);
-}
-.header-title {
-  color: var(--white);
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
-.header-subtitle {
-  color: rgba(255,255,255,0.5);
-  font-size: 0.75rem;
-  font-weight: 400;
-}
-.header-badge {
-  background: var(--red);
-  color: white;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-}
+/* MAIN */
+.main { max-width:860px; margin:-36px auto 60px; padding:0 20px; position:relative; z-index:10; }
+.card { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow-lg); overflow:hidden; }
 
-/* ── HERO ── */
-.hero {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 60%, #1e3a6e 100%);
-  padding: 56px 24px 80px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -60px; right: -60px;
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(200,16,46,0.15) 0%, transparent 70%);
-  border-radius: 50%;
-}
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: -40px; left: -40px;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(29,78,216,0.2) 0%, transparent 70%);
-  border-radius: 50%;
-}
-.hero-icon {
-  font-size: 3rem;
-  margin-bottom: 12px;
-  display: block;
-  animation: float 3s ease-in-out infinite;
-}
-@keyframes float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-.hero h1 {
-  font-size: 2.4rem;
-  font-weight: 900;
-  color: var(--white);
-  margin-bottom: 10px;
-  letter-spacing: -0.5px;
-}
-.hero h1 span { color: #ff6b7a; }
-.hero p {
-  color: rgba(255,255,255,0.65);
-  font-size: 1rem;
-  font-weight: 300;
-}
+/* FORM */
+.form-panel { padding:30px 34px; }
+.mode-tabs { display:flex; background:var(--gray-100); border-radius:var(--radius-sm); padding:4px; margin-bottom:26px; gap:4px; }
+.mode-tab { flex:1; padding:9px 16px; border:none; background:transparent; border-radius:6px; font-family:var(--font); font-size:0.88rem; font-weight:500; color:var(--gray-600); cursor:pointer; transition:all 0.2s; }
+.mode-tab.active { background:var(--white); color:var(--navy); box-shadow:0 1px 6px rgba(0,0,0,0.1); }
 
-/* ── MAIN LAYOUT ── */
-.main {
-  max-width: 900px;
-  margin: -36px auto 60px;
-  padding: 0 20px;
-  position: relative;
-  z-index: 10;
-}
+.field-group { margin-bottom:18px; }
+.field-label { font-size:0.78rem; font-weight:700; color:var(--gray-600); letter-spacing:0.5px; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
 
-/* ── CARD ── */
-.card {
-  background: var(--white);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
-}
+/* FLOOR CHIPS */
+.floor-chips { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+.chip { padding:4px 11px; border-radius:20px; border:1.5px solid var(--gray-200); background:var(--white); font-family:var(--font); font-size:0.76rem; font-weight:600; color:var(--gray-600); cursor:pointer; transition:all 0.15s; }
+.chip:hover { border-color:var(--navy); color:var(--navy); }
+.chip.active { background:var(--navy); border-color:var(--navy); color:white; }
 
-/* ── FORM PANEL ── */
-.form-panel {
-  padding: 32px 36px;
-}
-.mode-tabs {
-  display: flex;
-  background: var(--gray-100);
-  border-radius: var(--radius-sm);
-  padding: 4px;
-  margin-bottom: 28px;
-  gap: 4px;
-}
-.mode-tab {
-  flex: 1;
-  padding: 9px 16px;
-  border: none;
-  background: transparent;
-  border-radius: 6px;
-  font-family: var(--font);
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: var(--gray-600);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.mode-tab.active {
-  background: var(--white);
-  color: var(--navy);
-  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
-}
+/* SELECT */
+.select-wrap { position:relative; }
+select { width:100%; padding:13px 16px; font-family:var(--font); font-size:0.95rem; font-weight:500; color:var(--gray-800); background:var(--gray-50); border:1.5px solid var(--gray-200); border-radius:var(--radius-sm); appearance:none; cursor:pointer; transition:border-color 0.2s, box-shadow 0.2s; direction:rtl; }
+select:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(29,78,216,0.1); background:var(--white); }
+.sel-arrow { position:absolute; left:14px; top:50%; transform:translateY(-50%); pointer-events:none; color:var(--gray-400); font-size:0.75rem; }
 
-.field-group { margin-bottom: 20px; }
-.field-label {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--gray-600);
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.field-label span { font-size: 0.9rem; }
+/* SWAP */
+.swap-row { display:flex; justify-content:center; margin:6px 0; }
+.swap-btn { background:none; border:1.5px solid var(--gray-200); border-radius:50%; width:36px; height:36px; cursor:pointer; font-size:1rem; color:var(--gray-600); transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
+.swap-btn:hover { border-color:var(--blue); color:var(--blue); transform:rotate(180deg); }
 
-.select-wrapper { position: relative; }
-select {
-  width: 100%;
-  padding: 14px 16px;
-  font-family: var(--font);
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--gray-800);
-  background: var(--gray-50);
-  border: 1.5px solid var(--gray-200);
-  border-radius: var(--radius-sm);
-  appearance: none;
-  cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  direction: rtl;
-}
-select:focus {
-  outline: none;
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(29,78,216,0.1);
-  background: var(--white);
-}
-.select-arrow {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: var(--gray-400);
-  font-size: 0.8rem;
-}
-.floor-filter {
-  display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;
-}
-.floor-chip {
-  padding: 4px 12px; border-radius: 20px;
-  border: 1.5px solid var(--gray-200); background: var(--white);
-  font-family: var(--font); font-size: 0.78rem; font-weight: 600;
-  color: var(--gray-600); cursor: pointer; transition: all 0.15s;
-}
-.floor-chip:hover { border-color: var(--navy); color: var(--navy); }
-.floor-chip.active { background: var(--navy); border-color: var(--navy); color: white; }
+/* CALC BUTTON */
+.calc-btn { width:100%; padding:15px; background:var(--navy); color:var(--white); border:none; border-radius:var(--radius-sm); font-family:var(--font); font-size:1rem; font-weight:700; cursor:pointer; transition:all 0.2s; margin-top:8px; display:flex; align-items:center; justify-content:center; gap:8px; }
+.calc-btn:hover { background:var(--navy-light); transform:translateY(-1px); box-shadow:0 6px 20px rgba(15,27,53,0.3); }
 
-.swap-btn {
-  display: flex;
-  justify-content: center;
-  margin: 6px 0;
-}
-.swap-btn button {
-  background: none;
-  border: 1.5px solid var(--gray-200);
-  border-radius: 50%;
-  width: 36px; height: 36px;
-  cursor: pointer;
-  font-size: 1rem;
-  color: var(--gray-600);
-  transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center;
-}
-.swap-btn button:hover {
-  border-color: var(--blue);
-  color: var(--blue);
-  transform: rotate(180deg);
-}
+/* ERROR */
+.error-msg { background:#fff1f2; border:1px solid #fecdd3; border-radius:var(--radius-sm); padding:13px 18px; color:#be123c; font-size:0.9rem; font-weight:500; text-align:center; display:none; margin-top:14px; }
+.error-msg.show { display:block; animation:fadeUp 0.3s ease; }
 
-.calc-btn {
-  width: 100%;
-  padding: 16px;
-  background: var(--navy);
-  color: var(--white);
-  border: none;
-  border-radius: var(--radius-sm);
-  font-family: var(--font);
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 8px;
-  letter-spacing: 0.3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.calc-btn:hover {
-  background: var(--navy-light);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(15,27,53,0.3);
-}
-.calc-btn:active { transform: translateY(0); }
+/* DIVIDER */
+.divider { height:1px; background:var(--gray-100); }
 
-/* ── DIVIDER ── */
-.panel-divider {
-  height: 1px;
-  background: var(--gray-100);
-}
+/* RESULTS */
+.results { padding:26px 34px 34px; display:none; animation:fadeUp 0.4s ease; }
+.results.show { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 
-/* ── RESULTS ── */
-.results-panel {
-  padding: 28px 36px 36px;
-  display: none;
-  animation: fadeUp 0.4s ease;
-}
-.results-panel.visible { display: block; }
+.results-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+.results-title { font-size:0.95rem; font-weight:700; }
+.route-badge { background:#dbeafe; color:#1e40af; font-size:0.75rem; font-weight:700; padding:4px 12px; border-radius:20px; }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+/* METRICS */
+.metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:22px; }
+.metric { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-sm); padding:13px 10px; text-align:center; }
+.metric-icon { font-size:1.2rem; display:block; margin-bottom:4px; }
+.metric-val { font-size:1.3rem; font-weight:800; color:var(--navy); display:block; margin-bottom:2px; }
+.metric-lbl { font-size:0.72rem; color:var(--gray-400); font-weight:500; }
 
-.results-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-.results-title {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--gray-800);
-}
-.route-badge {
-  background: #dbeafe;
-  color: #1e40af;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 20px;
-}
+/* STEPS */
+.steps-label { font-size:0.78rem; font-weight:700; color:var(--gray-400); letter-spacing:0.8px; text-transform:uppercase; margin-bottom:14px; }
+.steps { position:relative; }
+.step { display:flex; align-items:flex-start; gap:14px; position:relative; padding-bottom:18px; }
+.step:last-child { padding-bottom:0; }
+.step-line { position:absolute; right:11px; top:28px; width:2px; height:calc(100% - 10px); background:var(--gray-200); }
+.step:last-child .step-line { display:none; }
+.step-dot { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:0.68rem; font-weight:800; position:relative; z-index:1; }
+.dot-start { background:var(--success); color:white; }
+.dot-end   { background:var(--red); color:white; }
+.dot-mid   { background:var(--gray-200); color:var(--gray-600); }
+.step-body { flex:1; padding-top:2px; }
+.step-name { font-size:0.95rem; font-weight:600; color:var(--gray-800); display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.floor-tag { font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:10px; white-space:nowrap; }
+.step-instr { display:inline-flex; align-items:center; gap:4px; background:#eff6ff; color:var(--blue); font-size:0.76rem; font-weight:600; padding:3px 10px; border-radius:20px; margin-top:5px; }
 
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 24px;
-}
-.metric {
-  background: var(--gray-50);
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-sm);
-  padding: 14px 12px;
-  text-align: center;
-}
-.metric-val {
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: var(--navy);
-  display: block;
-  margin-bottom: 3px;
-}
-.metric-lbl {
-  font-size: 0.73rem;
-  color: var(--gray-400);
-  font-weight: 500;
-}
-.metric-icon {
-  font-size: 1.2rem;
-  display: block;
-  margin-bottom: 4px;
-}
+footer { text-align:center; padding:22px; color:var(--gray-400); font-size:0.8rem; }
 
-/* ── ROUTE STEPS ── */
-.route-steps { position: relative; }
-.route-steps-title {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--gray-400);
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-.step {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  position: relative;
-  padding-bottom: 20px;
-}
-.step:last-child { padding-bottom: 0; }
-
-.step-line {
-  position: absolute;
-  right: 11px;
-  top: 28px;
-  width: 2px;
-  height: calc(100% - 12px);
-  background: var(--gray-200);
-}
-.step:last-child .step-line { display: none; }
-
-.step-dot {
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  font-size: 0.7rem;
-  font-weight: 800;
-  position: relative;
-  z-index: 1;
-}
-.step-dot.start { background: var(--success); color: white; }
-.step-dot.end   { background: var(--red); color: white; }
-.step-dot.mid   { background: var(--gray-200); color: var(--gray-600); }
-
-.step-content { flex: 1; padding-top: 2px; }
-.step-name {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--gray-800);
-  margin-bottom: 3px;
-}
-.step-floor {
-  font-size: 0.75rem;
-  color: var(--gray-400);
-}
-.step-instr {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: #eff6ff;
-  color: var(--blue);
-  font-size: 0.76rem;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-  margin-top: 5px;
-}
-
-/* ── ERROR ── */
-.error-msg {
-  background: #fff1f2;
-  border: 1px solid #fecdd3;
-  border-radius: var(--radius-sm);
-  padding: 14px 18px;
-  color: #be123c;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-align: center;
-  display: none;
-  margin-top: 16px;
-}
-.error-msg.visible { display: block; animation: fadeUp 0.3s ease; }
-
-/* ── FOOTER ── */
-footer {
-  text-align: center;
-  padding: 24px;
-  color: var(--gray-400);
-  font-size: 0.8rem;
-}
-
-/* ── MOBILE ── */
-@media (max-width: 600px) {
-  .hero h1 { font-size: 1.8rem; }
-  .form-panel, .results-panel { padding: 24px 20px; }
-  .metrics { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-  .metric { padding: 10px 8px; }
-  .metric-val { font-size: 1.1rem; }
+@media(max-width:600px) {
+  .hero h1 { font-size:1.75rem; }
+  .form-panel, .results { padding:20px 18px; }
+  .metrics { gap:6px; }
+  .metric { padding:10px 6px; }
+  .metric-val { font-size:1.1rem; }
 }
 </style>
 </head>
@@ -482,288 +149,447 @@ footer {
 <div class="hero">
   <span class="hero-icon">🧭</span>
   <h1>נווט <span>חכם</span> במכללה</h1>
-  <p>מצא את המסלול הקצר ביותר בין כל שתי נקודות · מבוסס אלגוריתם דייקסטרה</p>
+  <p>מצא את המסלול הקצר ביותר בין כל שתי נקודות · אלגוריתם דייקסטרה</p>
 </div>
 
 <div class="main">
   <div class="card">
     <div class="form-panel">
 
-      <!-- MODE TABS -->
       <div class="mode-tabs">
-        <button class="mode-tab active" onclick="setMode('time', this)">⏱ מהיר ביותר</button>
-        <button class="mode-tab" onclick="setMode('dist', this)">📏 קצר ביותר</button>
+        <button class="mode-tab active" onclick="setMode('time',this)">⏱ מהיר ביותר</button>
+        <button class="mode-tab" onclick="setMode('dist',this)">📏 קצר ביותר</button>
       </div>
 
       <!-- FROM -->
       <div class="field-group">
         <div class="field-label"><span>📍</span> נקודת מוצא</div>
-        <div class="floor-filter" id="from-floors"></div>
-        <div class="select-wrapper">
-          <select id="from-select" onchange="clearResults()"></select>
-          <span class="select-arrow">▼</span>
+        <div class="floor-chips" id="chips-from"></div>
+        <div class="select-wrap">
+          <select id="sel-from" onchange="clearResults()"></select>
+          <span class="sel-arrow">▼</span>
         </div>
       </div>
 
-      <!-- SWAP -->
-      <div class="swap-btn">
-        <button onclick="swapSelects()" title="החלף">⇅</button>
+      <div class="swap-row">
+        <button class="swap-btn" onclick="doSwap()" title="החלף">⇅</button>
       </div>
 
       <!-- TO -->
       <div class="field-group">
         <div class="field-label"><span>🎯</span> יעד</div>
-        <div class="floor-filter" id="to-floors"></div>
-        <div class="select-wrapper">
-          <select id="to-select" onchange="clearResults()"></select>
-          <span class="select-arrow">▼</span>
+        <div class="floor-chips" id="chips-to"></div>
+        <div class="select-wrap">
+          <select id="sel-to" onchange="clearResults()"></select>
+          <span class="sel-arrow">▼</span>
         </div>
       </div>
 
-      <button class="calc-btn" onclick="calculate()">
-        <span>🔍</span> חשב מסלול
-      </button>
-
-      <div class="error-msg" id="error-msg">❌ לא נמצא מסלול בין הנקודות שנבחרו</div>
+      <button class="calc-btn" onclick="calculate()"><span>🔍</span> חשב מסלול</button>
+      <div class="error-msg" id="err"></div>
     </div>
 
-    <div class="panel-divider"></div>
+    <div class="divider"></div>
 
-    <!-- RESULTS -->
-    <div class="results-panel" id="results-panel">
-      <div class="results-header">
+    <div class="results" id="results">
+      <div class="results-head">
         <div class="results-title">✅ המסלול המלא</div>
-        <span class="route-badge" id="route-badge">מסלול מהיר</span>
+        <span class="route-badge" id="badge">מסלול מהיר</span>
       </div>
-
       <div class="metrics">
-        <div class="metric">
-          <span class="metric-icon">⏱</span>
-          <span class="metric-val" id="m-time">—</span>
-          <span class="metric-lbl">זמן</span>
-        </div>
-        <div class="metric">
-          <span class="metric-icon">📏</span>
-          <span class="metric-val" id="m-dist">—</span>
-          <span class="metric-lbl">מרחק</span>
-        </div>
-        <div class="metric">
-          <span class="metric-icon">🚩</span>
-          <span class="metric-val" id="m-stops">—</span>
-          <span class="metric-lbl">עצירות</span>
-        </div>
+        <div class="metric"><span class="metric-icon">⏱</span><span class="metric-val" id="m-t">—</span><span class="metric-lbl">זמן</span></div>
+        <div class="metric"><span class="metric-icon">📏</span><span class="metric-val" id="m-d">—</span><span class="metric-lbl">מרחק</span></div>
+        <div class="metric"><span class="metric-icon">🚩</span><span class="metric-val" id="m-s">—</span><span class="metric-lbl">עצירות</span></div>
       </div>
-
-      <div class="route-steps-title">שלבי המסלול</div>
-      <div class="route-steps" id="route-steps"></div>
+      <div class="steps-label">שלבי המסלול</div>
+      <div class="steps" id="steps"></div>
     </div>
   </div>
 </div>
 
-<footer>
-  CampusNav · מכללת עזריאלי ירושלים · אלגוריתם דייקסטרה · פרויקט חקר ביצועים 2
-</footer>
+<footer>CampusNav · מכללת עזריאלי ירושלים · אלגוריתם דייקסטרה · פרויקט חקר ביצועים 2</footer>
 
 <script>
-const NODES = {"1":{"name":"שער גבעת מרדכי/בייט","floor":"-3","type":"כניסה חיצונית"},"2":{"name":"שער כניסה תחתון","floor":"-2","type":"כניסה חיצונית"},"3":{"name":"אודיטוריום","floor":"-2","type":"אולם"},"4":{"name":"מעלית","floor":"כל הקומות","type":"תשתית"},"5":{"name":"פינת ישיבה מרכזית","floor":"0","type":"אזור ישיבה"},"6":{"name":"פינת למידה 0","floor":"0","type":"אזור למידה"},"7":{"name":"מרכז שירות לסטודנט","floor":"0","type":"שירות"},"8":{"name":"מרכז מודיעין","floor":"0","type":"שירות"},"9":{"name":"קפיטריה","floor":"0","type":"מזון"},"10":{"name":"בית כנסת","floor":"0","type":"שירות"},"11":{"name":"מחשוב","floor":"0","type":"שירות"},"12":{"name":"גן עוזי","floor":"0","type":"חוץ"},"13":{"name":"אגודה ומרכז ייעוץ","floor":"0","type":"שירות"},"14":{"name":"כניסה 0","floor":"0","type":"כניסה"},"15":{"name":"שער רכבים ראשי","floor":"0","type":"כניסה חיצונית"},"16":{"name":"שער כניסה בית הכרם","floor":"0","type":"כניסה חיצונית"},"17":{"name":"שער כניסה למכללה ראשי","floor":"0","type":"כניסה חיצונית"},"18":{"name":"שירותים -2","floor":"-2","type":"שירות"},"19":{"name":"שירותים -1","floor":"-1","type":"שירות"},"20":{"name":"שירותים 0","floor":"0","type":"צומת מרכזי"},"21":{"name":"שירותים 1","floor":"1","type":"שירות"},"22":{"name":"שירותים 2","floor":"2","type":"שירות"},"23":{"name":"שירותים 3","floor":"3","type":"שירות"},"24":{"name":"c-103","floor":"-1","type":"כיתה"},"25":{"name":"c-104","floor":"-1","type":"כיתה"},"26":{"name":"c-105","floor":"-1","type":"כיתה"},"27":{"name":"c-106","floor":"-1","type":"כיתה"},"28":{"name":"c102","floor":"1","type":"כיתה"},"29":{"name":"c103","floor":"1","type":"כיתה"},"30":{"name":"c104","floor":"1","type":"כיתה"},"31":{"name":"c105","floor":"1","type":"כיתה"},"32":{"name":"c106","floor":"1","type":"כיתה"},"33":{"name":"c107","floor":"1","type":"כיתה"},"34":{"name":"c108","floor":"1","type":"כיתה"},"35":{"name":"c109","floor":"1","type":"כיתה"},"36":{"name":"c110","floor":"1","type":"כיתה"},"37":{"name":"c202","floor":"2","type":"כיתה"},"38":{"name":"c203","floor":"2","type":"כיתה"},"39":{"name":"c204","floor":"2","type":"כיתה"},"40":{"name":"c205","floor":"2","type":"כיתה"},"41":{"name":"c206","floor":"2","type":"כיתה"},"42":{"name":"c207","floor":"2","type":"כיתה"},"43":{"name":"c208","floor":"2","type":"כיתה"},"44":{"name":"c209","floor":"2","type":"כיתה"},"45":{"name":"c210","floor":"2","type":"כיתה"},"46":{"name":"פינת למידה 3","floor":"3","type":"אזור למידה"},"47":{"name":"ספריה","floor":"3","type":"שירות"}};
-
-const ADJ = {
-  time: {"1":[["2",105]],"2":[["1",105],["3",30],["18",14],["19",30]],"3":[["2",30]],"4":[],"5":[],"6":[["20",13],["13",23],["7",8]],"7":[["6",8],["11",29]],"8":[["20",17]],"9":[["17",30],["10",7],["12",25]],"10":[["9",7],["14",18]],"11":[["7",29],["12",9]],"12":[["11",9],["9",25]],"13":[["6",23]],"14":[["10",18],["15",128]],"15":[["14",128]],"16":[["17",40]],"17":[["16",40],["9",30]],"18":[["2",14],["19",10]],"19":[["2",30],["18",10],["20",10],["24",13]],"20":[["8",17],["6",13],["19",10],["21",10]],"21":[["20",10],["22",10],["28",13]],"22":[["21",10],["23",10],["37",13]],"23":[["47",8],["22",10]],"24":[["19",13],["25",5]],"25":[["24",5],["26",5]],"26":[["25",5],["27",5]],"27":[["26",5]],"28":[["21",13],["29",5]],"29":[["28",5],["30",5]],"30":[["29",5],["31",5]],"31":[["30",5],["32",5]],"32":[["31",5],["33",5]],"33":[["32",5],["34",5]],"34":[["33",5],["35",5]],"35":[["34",5],["36",5]],"36":[["35",5]],"37":[["22",13],["38",5]],"38":[["37",5],["39",5]],"39":[["38",5],["40",5]],"40":[["39",5],["41",5]],"41":[["40",5],["42",5]],"42":[["41",5],["43",5]],"43":[["42",5],["44",5]],"44":[["43",5],["45",5]],"45":[["44",5]],"46":[["47",8]],"47":[["46",8],["23",8]]},
-  dist: {"1":[["2",110]],"2":[["1",110],["3",30],["18",10],["19",20]],"3":[["2",30]],"4":[],"5":[],"6":[["20",16],["13",24],["7",9]],"7":[["6",9],["11",27]],"8":[["20",8]],"9":[["17",35],["10",10],["12",25]],"10":[["9",10],["14",19]],"11":[["7",27],["12",8]],"12":[["11",8],["9",25]],"13":[["6",24]],"14":[["10",19],["15",180]],"15":[["14",180]],"16":[["17",45]],"17":[["16",45],["9",35]],"18":[["2",10],["19",12]],"19":[["2",20],["18",12],["20",12],["24",8]],"20":[["8",8],["6",16],["19",12],["21",12]],"21":[["20",12],["22",12],["28",8]],"22":[["21",12],["23",12],["37",8]],"23":[["47",10],["22",12]],"24":[["19",8],["25",4]],"25":[["24",4],["26",4]],"26":[["25",4],["27",4]],"27":[["26",4]],"28":[["21",8],["29",4]],"29":[["28",4],["30",4]],"30":[["29",4],["31",4]],"31":[["30",4],["32",4]],"32":[["31",4],["33",4]],"33":[["32",4],["34",4]],"34":[["33",4],["35",4]],"35":[["34",4],["36",4]],"36":[["35",4]],"37":[["22",8],["38",4]],"38":[["37",4],["39",4]],"39":[["38",4],["40",4]],"40":[["39",4],["41",4]],"41":[["40",4],["42",4]],"42":[["41",4],["43",4]],"43":[["42",4],["44",4]],"44":[["43",4],["45",4]],"45":[["44",4]],"46":[["47",9]],"47":[["46",9],["23",10]]}
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const NODES = {
+  "1":{"name":"שער גבעת מרדכי/בייט","floor":"-3","type":"כניסה חיצונית"},
+  "2":{"name":"שער כניסה תחתון","floor":"-2","type":"כניסה חיצונית"},
+  "3":{"name":"אודיטוריום","floor":"-2","type":"אולם"},
+  "6":{"name":"פינת למידה 0","floor":"0","type":"אזור למידה"},
+  "7":{"name":"מרכז שירות לסטודנט","floor":"0","type":"שירות"},
+  "8":{"name":"מרכז מודיעין","floor":"0","type":"שירות"},
+  "9":{"name":"קפיטריה","floor":"0","type":"מזון"},
+  "10":{"name":"בית כנסת","floor":"0","type":"שירות"},
+  "11":{"name":"מחשוב","floor":"0","type":"שירות"},
+  "12":{"name":"גן עוזי","floor":"0","type":"חוץ"},
+  "13":{"name":"אגודה ומרכז ייעוץ","floor":"0","type":"שירות"},
+  "14":{"name":"כניסה 0","floor":"0","type":"כניסה"},
+  "15":{"name":"שער רכבים ראשי","floor":"0","type":"כניסה חיצונית"},
+  "16":{"name":"שער כניסה בית הכרם","floor":"0","type":"כניסה חיצונית"},
+  "17":{"name":"שער כניסה למכללה ראשי","floor":"0","type":"כניסה חיצונית"},
+  "18":{"name":"שירותים -2","floor":"-2","type":"שירות"},
+  "19":{"name":"שירותים -1","floor":"-1","type":"שירות"},
+  "20":{"name":"שירותים 0","floor":"0","type":"צומת מרכזי"},
+  "21":{"name":"שירותים 1","floor":"1","type":"שירות"},
+  "22":{"name":"שירותים 2","floor":"2","type":"שירות"},
+  "23":{"name":"שירותים 3","floor":"3","type":"שירות"},
+  "24":{"name":"c-103","floor":"-1","type":"כיתה"},
+  "25":{"name":"c-104","floor":"-1","type":"כיתה"},
+  "26":{"name":"c-105","floor":"-1","type":"כיתה"},
+  "27":{"name":"c-106","floor":"-1","type":"כיתה"},
+  "28":{"name":"c102","floor":"1","type":"כיתה"},
+  "29":{"name":"c103","floor":"1","type":"כיתה"},
+  "30":{"name":"c104","floor":"1","type":"כיתה"},
+  "31":{"name":"c105","floor":"1","type":"כיתה"},
+  "32":{"name":"c106","floor":"1","type":"כיתה"},
+  "33":{"name":"c107","floor":"1","type":"כיתה"},
+  "34":{"name":"c108","floor":"1","type":"כיתה"},
+  "35":{"name":"c109","floor":"1","type":"כיתה"},
+  "36":{"name":"c110","floor":"1","type":"כיתה"},
+  "37":{"name":"c202","floor":"2","type":"כיתה"},
+  "38":{"name":"c203","floor":"2","type":"כיתה"},
+  "39":{"name":"c204","floor":"2","type":"כיתה"},
+  "40":{"name":"c205","floor":"2","type":"כיתה"},
+  "41":{"name":"c206","floor":"2","type":"כיתה"},
+  "42":{"name":"c207","floor":"2","type":"כיתה"},
+  "43":{"name":"c208","floor":"2","type":"כיתה"},
+  "44":{"name":"c209","floor":"2","type":"כיתה"},
+  "45":{"name":"c210","floor":"2","type":"כיתה"},
+  "46":{"name":"פינת למידה 3","floor":"3","type":"אזור למידה"},
+  "47":{"name":"ספריה","floor":"3","type":"שירות"}
 };
 
-const INSTR = {"1_2":"המשך ישר","2_1":"המשך ישר","2_3":"פנה שמאלה","3_2":"פנה שמאלה","2_18":"פנה ימינה","18_2":"פנה ימינה","2_19":"עלה קומה","19_2":"עלה קומה","16_17":"המשך ישר","17_16":"המשך ישר","17_9":"המשך ישר","9_17":"המשך ישר","9_10":"פנה שמאלה","10_9":"פנה שמאלה","10_14":"המשך ישר","14_10":"המשך ישר","14_15":"צא החוצה","15_14":"צא החוצה","20_8":"פנה ימינה","8_20":"פנה ימינה","20_6":"המשך ישר","6_20":"המשך ישר","6_13":"פנה ימינה","13_6":"פנה ימינה","6_7":"פנה שמאלה","7_6":"פנה שמאלה","7_11":"המשך ישר","11_7":"המשך ישר","11_12":"פנה ימינה","12_11":"פנה ימינה","12_9":"פנה שמאלה","9_12":"פנה שמאלה","47_46":"פנה שמאלה","46_47":"פנה שמאלה","23_47":"המשך ישר לספריה","47_23":"המשך ישר לספריה","18_19":"עלה קומה","19_18":"רד קומה","19_20":"עלה קומה","20_19":"רד קומה","20_21":"עלה קומה","21_20":"רד קומה","21_22":"עלה קומה","22_21":"רד קומה","22_23":"עלה קומה","23_22":"רד קומה","19_24":"פנה שמאלה לכיתות","24_19":"חזור למסדרון","21_28":"פנה ימינה לכיתות","28_21":"חזור למסדרון","22_37":"פנה ימינה לכיתות","37_22":"חזור למסדרון","24_25":"המשך ישר","25_24":"המשך ישר","25_26":"המשך ישר","26_25":"המשך ישר","26_27":"המשך ישר","27_26":"המשך ישר","28_29":"המשך ישר","29_28":"המשך ישר","29_30":"המשך ישר","30_29":"המשך ישר","30_31":"המשך ישר","31_30":"המשך ישר","31_32":"המשך ישר","32_31":"המשך ישר","32_33":"המשך ישר","33_32":"המשך ישר","33_34":"המשך ישר","34_33":"המשך ישר","34_35":"המשך ישר","35_34":"המשך ישר","35_36":"המשך ישר","36_35":"המשך ישר","37_38":"המשך ישר","38_37":"המשך ישר","38_39":"המשך ישר","39_38":"המשך ישר","39_40":"המשך ישר","40_39":"המשך ישר","40_41":"המשך ישר","41_40":"המשך ישר","41_42":"המשך ישר","42_41":"המשך ישר","42_43":"המשך ישר","43_42":"המשך ישר","43_44":"המשך ישר","44_43":"המשך ישר","44_45":"המשך ישר","45_44":"המשך ישר"};
+const ADJ_TIME = {
+  "1":[["2",105]],"2":[["1",105],["3",30],["18",14],["19",30]],"3":[["2",30]],
+  "6":[["20",13],["13",23],["7",8]],"7":[["6",8],["11",29]],"8":[["20",17]],
+  "9":[["17",30],["10",7],["12",25]],"10":[["9",7],["14",18]],"11":[["7",29],["12",9]],
+  "12":[["11",9],["9",25]],"13":[["6",23]],"14":[["10",18],["15",128]],"15":[["14",128]],
+  "16":[["17",40]],"17":[["16",40],["9",30]],
+  "18":[["2",14],["19",10]],"19":[["2",30],["18",10],["20",10],["24",13]],
+  "20":[["8",17],["6",13],["19",10],["21",10]],"21":[["20",10],["22",10],["28",13]],
+  "22":[["21",10],["23",10],["37",13]],"23":[["47",8],["22",10]],
+  "24":[["19",13],["25",5]],"25":[["24",5],["26",5]],"26":[["25",5],["27",5]],"27":[["26",5]],
+  "28":[["21",13],["29",5]],"29":[["28",5],["30",5]],"30":[["29",5],["31",5]],
+  "31":[["30",5],["32",5]],"32":[["31",5],["33",5]],"33":[["32",5],["34",5]],
+  "34":[["33",5],["35",5]],"35":[["34",5],["36",5]],"36":[["35",5]],
+  "37":[["22",13],["38",5]],"38":[["37",5],["39",5]],"39":[["38",5],["40",5]],
+  "40":[["39",5],["41",5]],"41":[["40",5],["42",5]],"42":[["41",5],["43",5]],
+  "43":[["42",5],["44",5]],"44":[["43",5],["45",5]],"45":[["44",5]],
+  "46":[["47",8]],"47":[["46",8],["23",8]]
+};
 
-let currentMode = 'time';
+const ADJ_DIST = {
+  "1":[["2",110]],"2":[["1",110],["3",30],["18",10],["19",20]],"3":[["2",30]],
+  "6":[["20",16],["13",24],["7",9]],"7":[["6",9],["11",27]],"8":[["20",8]],
+  "9":[["17",35],["10",10],["12",25]],"10":[["9",10],["14",19]],"11":[["7",27],["12",8]],
+  "12":[["11",8],["9",25]],"13":[["6",24]],"14":[["10",19],["15",180]],"15":[["14",180]],
+  "16":[["17",45]],"17":[["16",45],["9",35]],
+  "18":[["2",10],["19",12]],"19":[["2",20],["18",12],["20",12],["24",8]],
+  "20":[["8",8],["6",16],["19",12],["21",12]],"21":[["20",12],["22",12],["28",8]],
+  "22":[["21",12],["23",12],["37",8]],"23":[["47",10],["22",12]],
+  "24":[["19",8],["25",4]],"25":[["24",4],["26",4]],"26":[["25",4],["27",4]],"27":[["26",4]],
+  "28":[["21",8],["29",4]],"29":[["28",4],["30",4]],"30":[["29",4],["31",4]],
+  "31":[["30",4],["32",4]],"32":[["31",4],["33",4]],"33":[["32",4],["34",4]],
+  "34":[["33",4],["35",4]],"35":[["34",4],["36",4]],"36":[["35",4]],
+  "37":[["22",8],["38",4]],"38":[["37",4],["39",4]],"39":[["38",4],["40",4]],
+  "40":[["39",4],["41",4]],"41":[["40",4],["42",4]],"42":[["41",4],["43",4]],
+  "43":[["42",4],["44",4]],"44":[["43",4],["45",4]],"45":[["44",4]],
+  "46":[["47",9]],"47":[["46",9],["23",10]]
+};
 
+const INSTR = {
+  "1_2":"המשך ישר","2_1":"המשך ישר",
+  "2_3":"פנה שמאלה לאודיטוריום","3_2":"חזור לכניסה",
+  "2_18":"פנה ימינה לשירותים","18_2":"חזור לכניסה",
+  "2_19":"עלה קומה לקומה -1","19_2":"רד קומה לקומה -2",
+  "16_17":"המשך ישר לשער הראשי","17_16":"פנה שמאלה לשער בית הכרם",
+  "17_9":"המשך ישר לקפיטריה","9_17":"חזור לשער הכניסה",
+  "9_10":"פנה שמאלה לבית הכנסת","10_9":"חזור לקפיטריה",
+  "10_14":"המשך ישר לכניסה 0","14_10":"חזור לבית הכנסת",
+  "14_15":"צא החוצה לשער הרכבים","15_14":"כנס פנימה",
+  "20_8":"פנה ימינה למרכז מודיעין","8_20":"חזור למסדרון",
+  "20_6":"המשך ישר לפינת הלמידה","6_20":"חזור למסדרון",
+  "6_13":"פנה ימינה לאגודה","13_6":"חזור לפינת הלמידה",
+  "6_7":"פנה שמאלה למרכז שירות","7_6":"חזור לפינת הלמידה",
+  "7_11":"המשך ישר למחשוב","11_7":"חזור למרכז שירות",
+  "11_12":"פנה ימינה לגן עוזי","12_11":"כנס פנימה",
+  "12_9":"פנה שמאלה לקפיטריה","9_12":"פנה ימינה לגן עוזי",
+  "18_19":"עלה קומה לקומה -1","19_18":"רד קומה לקומה -2",
+  "19_20":"עלה קומה לקומה 0","20_19":"רד קומה לקומה -1",
+  "20_21":"עלה קומה לקומה 1","21_20":"רד קומה לקומה 0",
+  "21_22":"עלה קומה לקומה 2","22_21":"רד קומה לקומה 1",
+  "22_23":"עלה קומה לקומה 3","23_22":"רד קומה לקומה 2",
+  "19_24":"פנה שמאלה לכיתות קומה -1","24_19":"חזור למסדרון",
+  "21_28":"פנה ימינה לכיתות קומה 1","28_21":"חזור למסדרון",
+  "22_37":"פנה ימינה לכיתות קומה 2","37_22":"חזור למסדרון",
+  "23_47":"המשך ישר לספריה","47_23":"חזור למסדרון",
+  "47_46":"פנה שמאלה לפינת הלמידה","46_47":"פנה ימינה לספריה",
+  "24_25":"המשך ישר","25_24":"המשך ישר","25_26":"המשך ישר","26_25":"המשך ישר",
+  "26_27":"המשך ישר","27_26":"המשך ישר",
+  "28_29":"המשך ישר","29_28":"המשך ישר","29_30":"המשך ישר","30_29":"המשך ישר",
+  "30_31":"המשך ישר","31_30":"המשך ישר","31_32":"המשך ישר","32_31":"המשך ישר",
+  "32_33":"המשך ישר","33_32":"המשך ישר","33_34":"המשך ישר","34_33":"המשך ישר",
+  "34_35":"המשך ישר","35_34":"המשך ישר","35_36":"המשך ישר","36_35":"המשך ישר",
+  "37_38":"המשך ישר","38_37":"המשך ישר","38_39":"המשך ישר","39_38":"המשך ישר",
+  "39_40":"המשך ישר","40_39":"המשך ישר","40_41":"המשך ישר","41_40":"המשך ישר",
+  "41_42":"המשך ישר","42_41":"המשך ישר","42_43":"המשך ישר","43_42":"המשך ישר",
+  "43_44":"המשך ישר","44_43":"המשך ישר","44_45":"המשך ישר","45_44":"המשך ישר"
+};
+
+// ── HELPERS ────────────────────────────────────────────────────────────────────
 function floorLabel(f) {
-  if(f === 'כל הקומות') return f;
+  if (f === 'כל הקומות') return f;
   const n = parseInt(f);
-  if(n === 0) return 'קומת קרקע';
-  if(n > 0) return `קומה ${n}`;
-  return `קומה ${f}`;
+  if (n === 0) return 'קומת קרקע';
+  return n > 0 ? 'קומה ' + n : 'קומה ' + f;
 }
 
 function typeIcon(t) {
-  const map = {'כיתה':'🏫','מזון':'☕','שירות':'🔧','כניסה חיצונית':'🚪','כניסה':'🚪','תשתית':'🛗','אולם':'🎭','אזור למידה':'📚','אזור ישיבה':'🪑','חוץ':'🌳','צומת מרכזי':'⭕'};
-  return map[t] || '📍';
+  return ({'כיתה':'🏫','מזון':'☕','שירות':'🔧','כניסה חיצונית':'🚪','כניסה':'🚪','תשתית':'🛗','אולם':'🎭','אזור למידה':'📚','אזור ישיבה':'🪑','חוץ':'🌳','צומת מרכזי':'⭕'})[t] || '📍';
 }
 
-const FLOOR_ORDER = ['-3','-2','-1','0','1','2','3','כל הקומות'];
+const FLOOR_COLORS = {
+  '-3':['#ffedd5','#9a3412'], '-2':['#fee2e2','#991b1b'], '-1':['#ede9fe','#5b21b6'],
+  '0': ['#e0f2fe','#0369a1'], '1': ['#dcfce7','#166534'],
+  '2': ['#fef9c3','#854d0e'], '3': ['#fce7f3','#9d174d'], 'כל הקומות':['#f1f5f9','#475569']
+};
+
+function floorTag(f) {
+  const [bg, txt] = FLOOR_COLORS[f] || ['#f1f5f9','#475569'];
+  return '<span class="floor-tag" style="background:' + bg + ';color:' + txt + '">' + floorLabel(f) + '</span>';
+}
+
+function instrIcon(instr) {
+  if (!instr) return '';
+  if (instr.includes('ימינה')) return '↪';
+  if (instr.includes('שמאלה')) return '↩';
+  if (instr.includes('עלה')) return '↑';
+  if (instr.includes('רד')) return '↓';
+  if (instr.includes('צא') || instr.includes('כנס')) return '🚪';
+  if (instr.includes('חזור')) return '↰';
+  return '→';
+}
+
+const FLOOR_ORDER = ['-3','-2','-1','0','1','2','3'];
+
+// ── FLOOR CHIPS ───────────────────────────────────────────────────────────────
 const activeFloor = { from: 'all', to: 'all' };
 
-function buildFloorChips(which) {
-  const el = document.getElementById(`${which}-floors`);
+function buildChips(which) {
+  const el = document.getElementById('chips-' + which);
   const floors = FLOOR_ORDER.filter(f => Object.values(NODES).some(n => n.floor === f));
   el.innerHTML = '';
-  // "הכל" chip
-  const allChip = document.createElement('button');
-  allChip.className = 'floor-chip active';
-  allChip.textContent = 'הכל';
-  allChip.onclick = () => filterFloor(which, 'all', allChip);
-  el.appendChild(allChip);
-  // floor chips
-  for(const f of floors) {
-    const chip = document.createElement('button');
-    chip.className = 'floor-chip';
-    chip.textContent = floorLabel(f);
-    chip.onclick = () => filterFloor(which, f, chip);
-    el.appendChild(chip);
-  }
+
+  const all = document.createElement('button');
+  all.className = 'chip active';
+  all.textContent = 'הכל';
+  all.onclick = function() { filterFloor(which, 'all'); };
+  el.appendChild(all);
+
+  floors.forEach(function(f) {
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.textContent = floorLabel(f);
+    btn.onclick = function() { filterFloor(which, f); };
+    el.appendChild(btn);
+  });
 }
 
-function filterFloor(which, floor, chipEl) {
+function filterFloor(which, floor) {
   activeFloor[which] = floor;
-  // update chip styles
-  const container = document.getElementById(`${which}-floors`);
-  container.querySelectorAll('.floor-chip').forEach(c => c.classList.remove('active'));
-  chipEl.classList.add('active');
-  // rebuild select
-  fillSelect(which, floor);
+  document.getElementById('chips-' + which).querySelectorAll('.chip').forEach(function(c) {
+    c.classList.remove('active');
+    const label = c.textContent;
+    const match = floor === 'all' ? label === 'הכל' : label === floorLabel(floor);
+    if (match) c.classList.add('active');
+  });
+  rebuildSelect(which);
   clearResults();
 }
 
-function fillSelect(which, floorFilter) {
-  const sel = document.getElementById(`${which}-select`);
-  const current = sel.value;
+function rebuildSelect(which) {
+  const sel = document.getElementById('sel-' + which);
+  const prev = sel.value;
   sel.innerHTML = '';
+  const filter = activeFloor[which];
+
   const byFloor = {};
-  for(const [id, n] of Object.entries(NODES)) {
-    if(floorFilter !== 'all' && n.floor !== floorFilter) continue;
-    if(!byFloor[n.floor]) byFloor[n.floor] = [];
-    byFloor[n.floor].push({id, ...n});
-  }
-  for(const fl of FLOOR_ORDER) {
-    if(!byFloor[fl]) continue;
+  Object.entries(NODES).forEach(function(e) {
+    const id = e[0], n = e[1];
+    if (filter !== 'all' && n.floor !== filter) return;
+    if (!byFloor[n.floor]) byFloor[n.floor] = [];
+    byFloor[n.floor].push({ id: id, name: n.name, type: n.type, floor: n.floor });
+  });
+
+  FLOOR_ORDER.forEach(function(f) {
+    if (!byFloor[f]) return;
     const og = document.createElement('optgroup');
-    og.label = floorLabel(fl);
-    for(const n of byFloor[fl]) {
+    og.label = floorLabel(f);
+    byFloor[f].forEach(function(n) {
       const opt = document.createElement('option');
       opt.value = n.id;
-      opt.textContent = `${typeIcon(n.type)} ${n.name}`;
+      opt.textContent = typeIcon(n.type) + ' ' + n.name;
       og.appendChild(opt);
-    }
+    });
     sel.appendChild(og);
+  });
+
+  if ([...sel.options].some(function(o) { return o.value === prev; })) {
+    sel.value = prev;
   }
-  // restore selection if still available, else pick first
-  if([...sel.options].some(o => o.value === current)) sel.value = current;
 }
 
-function populateSelects() {
-  buildFloorChips('from');
-  buildFloorChips('to');
-  fillSelect('from', 'all');
-  fillSelect('to', 'all');
-  setSelectById(document.getElementById('from-select'), '17');
-  setSelectById(document.getElementById('to-select'), '47');
+// ── SWAP ──────────────────────────────────────────────────────────────────────
+function doSwap() {
+  const f = document.getElementById('sel-from');
+  const t = document.getElementById('sel-to');
+  const fv = f.value, tv = t.value;
+  const ff = activeFloor.from, tf = activeFloor.to;
+
+  activeFloor.from = tf;
+  activeFloor.to   = ff;
+
+  // swap chips
+  ['from','to'].forEach(function(which) {
+    const fl = activeFloor[which];
+    document.getElementById('chips-' + which).querySelectorAll('.chip').forEach(function(c) {
+      c.classList.remove('active');
+      const match = fl === 'all' ? c.textContent === 'הכל' : c.textContent === floorLabel(fl);
+      if (match) c.classList.add('active');
+    });
+  });
+
+  rebuildSelect('from');
+  rebuildSelect('to');
+
+  // restore values if available
+  if ([...f.options].some(function(o){ return o.value === tv; })) f.value = tv;
+  if ([...t.options].some(function(o){ return o.value === fv; })) t.value = fv;
+
+  clearResults();
 }
 
-function setSelectById(sel, id) {
-  for(const opt of sel.options) { if(opt.value === id) { sel.value = id; break; } }
+// ── DIJKSTRA ──────────────────────────────────────────────────────────────────
+function dijkstra(adj, src, tgt) {
+  const ids = Object.keys(NODES);
+  const dist = {}, prev = {};
+  const unvisited = new Set(ids);
+  ids.forEach(function(n) { dist[n] = Infinity; prev[n] = null; });
+  dist[src] = 0;
+  while (unvisited.size > 0) {
+    let u = null;
+    unvisited.forEach(function(n) { if (u === null || dist[n] < dist[u]) u = n; });
+    if (u === tgt || dist[u] === Infinity) break;
+    unvisited.delete(u);
+    (adj[u] || []).forEach(function(e) {
+      const nb = e[0], w = e[1];
+      if (!unvisited.has(nb)) return;
+      const alt = dist[u] + w;
+      if (alt < dist[nb]) { dist[nb] = alt; prev[nb] = u; }
+    });
+  }
+  if (dist[tgt] === Infinity) return null;
+  const path = [];
+  let c = tgt;
+  while (c !== null) { path.unshift(c); c = prev[c]; }
+  return path[0] === src ? { path: path, total: dist[tgt] } : null;
 }
 
+// ── MODE ──────────────────────────────────────────────────────────────────────
+let mode = 'time';
 function setMode(m, el) {
-  currentMode = m;
-  document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+  mode = m;
+  document.querySelectorAll('.mode-tab').forEach(function(t){ t.classList.remove('active'); });
   el.classList.add('active');
   clearResults();
 }
 
-function swapSelects() {
-  const from = document.getElementById('from-select');
-  const to   = document.getElementById('to-select');
-  const tmp  = from.value;
-  from.value = to.value;
-  to.value   = tmp;
-  clearResults();
-}
-
 function clearResults() {
-  document.getElementById('results-panel').classList.remove('visible');
-  document.getElementById('error-msg').classList.remove('visible');
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('err').classList.remove('show');
 }
 
-function dijkstra(adj, src, tgt) {
-  const dist = {}, prev = {};
-  const unvisited = new Set(Object.keys(adj));
-  for(const n of unvisited) { dist[n] = Infinity; prev[n] = null; }
-  dist[src] = 0;
-  while(unvisited.size > 0) {
-    let u = null;
-    for(const n of unvisited) { if(u === null || dist[n] < dist[u]) u = n; }
-    if(u === tgt || dist[u] === Infinity) break;
-    unvisited.delete(u);
-    for(const [nb, w] of (adj[u] || [])) {
-      if(!unvisited.has(nb)) continue;
-      const alt = dist[u] + w;
-      if(alt < dist[nb]) { dist[nb] = alt; prev[nb] = u; }
-    }
-  }
-  if(dist[tgt] === Infinity) return null;
-  const path = [];
-  let c = tgt;
-  while(c !== null) { path.unshift(c); c = prev[c]; }
-  if(path[0] !== src) return null;
-  return { path, totalWeight: dist[tgt] };
-}
-
+// ── CALCULATE ─────────────────────────────────────────────────────────────────
 function calculate() {
-  const src = document.getElementById('from-select').value;
-  const tgt = document.getElementById('to-select').value;
-  const errEl = document.getElementById('error-msg');
-  errEl.classList.remove('visible');
+  const src = document.getElementById('sel-from').value;
+  const tgt = document.getElementById('sel-to').value;
+  const errEl = document.getElementById('err');
+  errEl.classList.remove('show');
 
-  if(src === tgt) { errEl.textContent = '📍 נקודת המוצא והיעד זהות!'; errEl.classList.add('visible'); return; }
+  if (src === tgt) {
+    errEl.textContent = '📍 נקודת המוצא והיעד זהות!';
+    errEl.classList.add('show');
+    return;
+  }
 
-  const adj = ADJ[currentMode];
+  const adj = mode === 'time' ? ADJ_TIME : ADJ_DIST;
   const res = dijkstra(adj, src, tgt);
 
-  if(!res) { errEl.textContent = '❌ לא נמצא מסלול — ייתכן שהצמתים מנותקים'; errEl.classList.add('visible'); return; }
-
-  // Calc totals
-  let totalTime = 0, totalDist = 0;
-  for(let i = 0; i < res.path.length - 1; i++) {
-    const a = res.path[i], b = res.path[i+1];
-    const te = ADJ.time[a].find(x => x[0] === b);
-    const de = ADJ.dist[a].find(x => x[0] === b);
-    if(te) totalTime += te[1];
-    if(de) totalDist += de[1];
+  if (!res) {
+    errEl.textContent = '❌ לא נמצא מסלול — ייתכן שהצמתים מנותקים מהגרף';
+    errEl.classList.add('show');
+    return;
   }
 
-  const m = Math.floor(totalTime/60), s = Math.round(totalTime%60);
-  document.getElementById('m-time').textContent = m > 0 ? `${m}:${String(s).padStart(2,'0')}` : `${s}″`;
-  document.getElementById('m-dist').textContent = `${totalDist}מ׳`;
-  document.getElementById('m-stops').textContent = res.path.length - 1;
-  document.getElementById('route-badge').textContent = currentMode === 'time' ? '⚡ מסלול מהיר' : '📏 מסלול קצר';
+  // calc totals
+  let totalTime = 0, totalDist = 0;
+  for (let i = 0; i < res.path.length - 1; i++) {
+    const a = res.path[i], b = res.path[i + 1];
+    const te = (ADJ_TIME[a] || []).find(function(x){ return x[0] === b; });
+    const de = (ADJ_DIST[a] || []).find(function(x){ return x[0] === b; });
+    if (te) totalTime += te[1];
+    if (de) totalDist += de[1];
+  }
 
-  // Steps
-  const stepsEl = document.getElementById('route-steps');
+  const m = Math.floor(totalTime / 60), s = Math.round(totalTime % 60);
+  document.getElementById('m-t').textContent = m > 0 ? m + ':' + String(s).padStart(2,'0') : s + '″';
+  document.getElementById('m-d').textContent = totalDist + 'מ׳';
+  document.getElementById('m-s').textContent = res.path.length - 1;
+  document.getElementById('badge').textContent = mode === 'time' ? '⚡ מסלול מהיר' : '📏 מסלול קצר';
+
+  // render steps
+  const stepsEl = document.getElementById('steps');
   stepsEl.innerHTML = '';
-  res.path.forEach((nodeId, i) => {
+  res.path.forEach(function(nodeId, i) {
     const node = NODES[nodeId];
-    const isFirst = i === 0, isLast = i === res.path.length - 1;
-    const prevId = isFirst ? null : res.path[i-1];
-    const instr = prevId ? (INSTR[`${prevId}_${nodeId}`] || 'המשך ישר') : '';
+    const isFirst = i === 0;
+    const isLast  = i === res.path.length - 1;
+    const prevId  = isFirst ? null : res.path[i - 1];
+    const instr   = prevId ? (INSTR[prevId + '_' + nodeId] || 'המשך ישר') : '';
+    const ic      = instrIcon(instr);
+    const dotCls  = isFirst ? 'dot-start' : isLast ? 'dot-end' : 'dot-mid';
+    const dotTxt  = isFirst ? '✓' : isLast ? '★' : String(i);
+    const instrHtml = instr ? '<span class="step-instr">' + ic + ' ' + instr + '</span>' : '';
 
-    const instrIcon = instr.includes('ימינה') ? '↪' : instr.includes('שמאלה') ? '↩' : instr.includes('עלה') ? '↑' : instr.includes('רד') ? '↓' : instr.includes('צא') ? '🚪' : '→';
-
-    stepsEl.innerHTML += `
-      <div class="step">
-        <div class="step-line"></div>
-        <div class="step-dot ${isFirst?'start':isLast?'end':'mid'}">${isFirst?'✓':isLast?'★':i}</div>
-        <div class="step-content">
-          <div class="step-name">${typeIcon(node.type)} ${node.name}</div>
-          <div class="step-floor">${floorLabel(node.floor)}</div>
-          ${instr ? `<span class="step-instr">${instrIcon} ${instr}</span>` : ''}
-        </div>
-      </div>`;
+    const div = document.createElement('div');
+    div.className = 'step';
+    div.innerHTML =
+      '<div class="step-line"></div>' +
+      '<div class="step-dot ' + dotCls + '">' + dotTxt + '</div>' +
+      '<div class="step-body">' +
+        '<div class="step-name">' + typeIcon(node.type) + ' ' + node.name + ' ' + floorTag(node.floor) + '</div>' +
+        instrHtml +
+      '</div>';
+    stepsEl.appendChild(div);
   });
 
-  document.getElementById('results-panel').classList.add('visible');
-  document.getElementById('results-panel').scrollIntoView({behavior:'smooth', block:'start'});
+  document.getElementById('results').classList.add('show');
+  document.getElementById('results').scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
-populateSelects();
+// ── INIT ──────────────────────────────────────────────────────────────────────
+buildChips('from');
+buildChips('to');
+rebuildSelect('from');
+rebuildSelect('to');
+
+// set defaults
+(function() {
+  var f = document.getElementById('sel-from');
+  var t = document.getElementById('sel-to');
+  for (var o of f.options) { if (o.value === '17') { f.value = '17'; break; } }
+  for (var o of t.options) { if (o.value === '47') { t.value = '47'; break; } }
+})();
 </script>
 </body>
 </html>
