@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusNav Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0f1b35;
+  --blue: #1d4ed8;
+  --green: #059669;
+  --red: #dc2626;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-600: #475569;
+  --gray-800: #1e293b;
+  --white: #ffffff;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; }
+body { 
+  font-family: 'Heebo', sans-serif; 
+  background: var(--gray-50); 
+  color: var(--gray-800); 
+  direction: rtl;
+  overflow-x: hidden;
+}
+
+header { 
+  background: var(--navy); 
+  padding: 14px 16px; 
+  color: white; 
+  text-align: center; 
+  position: sticky; 
+  top: 0; 
+  z-index: 100; 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+header h1 { font-size: 1.2rem; font-weight: 700; margin-bottom: 2px; }
+header p { font-size: 0.8rem; opacity: 0.75; }
+
+.container { 
+  max-width: 100%; 
+  margin: 0 auto; 
+  padding: 0; 
+}
+
+/* SEARCH SECTION */
+.search-section { 
+  background: white; 
+  padding: 14px 16px; 
+  border-bottom: 1px solid var(--gray-200);
+  position: sticky;
+  top: 58px;
+  z-index: 90;
+}
+
+.search-label { 
+  font-size: 0.75rem; 
+  font-weight: 700; 
+  color: var(--gray-600); 
+  text-transform: uppercase; 
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.search-input { 
+  width: 100%; 
+  padding: 12px 14px; 
+  border: 2px solid var(--gray-200); 
+  border-radius: 10px; 
+  font-family: 'Heebo', sans-serif; 
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+.search-input:focus { 
+  outline: none; 
+  border-color: var(--blue); 
+  background: white;
+}
+
+.search-results { 
+  position: absolute; 
+  top: 100%; 
+  left: 16px; 
+  right: 16px; 
+  background: white; 
+  border: 1px solid var(--gray-200); 
+  border-radius: 10px; 
+  max-height: 300px; 
+  overflow-y: auto; 
+  z-index: 101;
+  display: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.search-results.show { display: block; }
+
+.search-result-item { 
+  padding: 12px 14px; 
+  border-bottom: 1px solid var(--gray-100); 
+  cursor: pointer; 
+  transition: background 0.2s;
+}
+.search-result-item:hover { background: var(--gray-50); }
+.search-result-item:last-child { border-bottom: none; }
+.result-name { font-weight: 600; font-size: 0.95rem; }
+.result-type { font-size: 0.8rem; color: var(--gray-600); margin-top: 2px; }
+
+/* CONTROLS */
+.controls { 
+  background: white; 
+  padding: 14px 16px; 
+  margin: 12px 16px 0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.control-group { 
+  margin-bottom: 10px; 
+  position: relative;
+}
+.control-group:last-child { margin-bottom: 0; }
+
+select { 
+  width: 100%; 
+  padding: 12px 14px; 
+  border: 2px solid var(--gray-200); 
+  border-radius: 10px; 
+  font-family: 'Heebo', sans-serif; 
+  font-size: 1rem;
+  background: white;
+}
+select:focus { 
+  outline: none; 
+  border-color: var(--blue); 
+}
+
+.swap-btn { 
+  width: 100%; 
+  padding: 12px; 
+  background: var(--gray-100); 
+  border: 2px solid var(--gray-200); 
+  border-radius: 10px; 
+  font-family: 'Heebo', sans-serif; 
+  font-size: 0.95rem; 
+  font-weight: 600; 
+  color: var(--blue); 
+  cursor: pointer; 
+  margin: 12px 0;
+  transition: all 0.2s;
+}
+.swap-btn:active { transform: scale(0.98); }
+
+.btn-calc { 
+  width: 100%; 
+  padding: 14px; 
+  background: var(--navy); 
+  color: white; 
+  border: none; 
+  border-radius: 10px; 
+  font-family: 'Heebo', sans-serif; 
+  font-size: 1rem; 
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-calc:active { transform: scale(0.98); }
+
+/* RESULTS SECTION */
+.results-section { 
+  display: none; 
+  padding: 12px 16px;
+}
+.results-section.show { display: block; }
+
+.metrics { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 8px; 
+  margin-bottom: 14px;
+}
+.metric { 
+  background: white; 
+  padding: 10px 8px; 
+  border-radius: 10px; 
+  text-align: center;
+  border: 1px solid var(--gray-200);
+}
+.metric-val { 
+  font-size: 1.3rem; 
+  font-weight: 800; 
+  color: var(--blue); 
+  display: block; 
+}
+.metric-lbl { 
+  font-size: 0.75rem; 
+  color: var(--gray-600); 
+  margin-top: 2px; 
+}
+
+.map-container { 
+  background: white; 
+  border-radius: 12px; 
+  padding: 10px; 
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid var(--gray-200);
+}
+.map-svg { 
+  width: 100%; 
+  height: auto; 
+  background: var(--gray-50);
+  border-radius: 8px;
+}
+
+.steps-container { 
+  background: white; 
+  border-radius: 12px; 
+  padding: 12px; 
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid var(--gray-200);
+}
+
+.step { 
+  padding: 10px 0; 
+  border-bottom: 1px solid var(--gray-100); 
+  display: flex; 
+  align-items: flex-start; 
+  gap: 10px;
+  font-size: 0.95rem;
+}
+.step:last-child { border-bottom: none; }
+
+.step-icon { 
+  font-size: 1.2rem; 
+  min-width: 24px; 
+  text-align: center;
+}
+
+.step-content { flex: 1; }
+.step-name { font-weight: 600; }
+.step-instr { 
+  font-size: 0.85rem; 
+  color: var(--blue); 
+  margin-top: 2px; 
+  font-weight: 500;
+}
+
+/* FEEDBACK */
+.feedback-section { 
+  background: white; 
+  border-radius: 12px; 
+  padding: 12px; 
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid var(--gray-200);
+  display: none;
+}
+.feedback-section.show { display: block; }
+
+.feedback-q { font-weight: 600; margin-bottom: 10px; font-size: 0.95rem; }
+.feedback-buttons { display: flex; gap: 10px; }
+.fb-btn { 
+  flex: 1; 
+  padding: 12px; 
+  border: 2px solid var(--gray-200); 
+  background: white; 
+  border-radius: 10px; 
+  font-size: 1.3rem; 
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.fb-btn:active { transform: scale(0.95); }
+.fb-btn.thumbs-up:hover { border-color: var(--green); background: #f0fdf4; }
+.fb-btn.thumbs-down:hover { border-color: var(--red); background: #fef2f2; }
+
+.error { 
+  background: #fff5f5; 
+  border: 1px solid #fecdd3; 
+  border-radius: 10px; 
+  padding: 10px 12px; 
+  color: #c41e3a; 
+  text-align: center; 
+  display: none; 
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.error.show { display: block; }
+
+.success { 
+  background: #f0fdf4; 
+  border: 1px solid #86efac; 
+  border-radius: 10px; 
+  padding: 10px 12px; 
+  color: #166534; 
+  text-align: center; 
+  display: none; 
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.success.show { display: block; }
+
+footer { 
+  text-align: center; 
+  padding: 20px 16px; 
+  color: var(--gray-600); 
+  font-size: 0.8rem;
+}
+
+@media (max-width: 500px) {
+  header h1 { font-size: 1.1rem; }
+  .metric-val { font-size: 1.1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧭 CampusNav Pro</h1>
+  <p>חיפוש חכם • מפה ויזואלית • ניווט בזמן אמת</p>
+</header>
+
+<div class="container">
+  <div class="search-section">
+    <label class="search-label">🔍 חפש מיקום</label>
+    <input type="text" id="search" class="search-input" placeholder="למשל: ספרייה, מחשוב, c102, קפיטריה...">
+    <div class="search-results" id="results-dropdown"></div>
+  </div>
+
+  <div class="controls">
+    <div class="error" id="error"></div>
+    
+    <div class="control-group">
+      <label class="search-label">📍 נקודת מוצא</label>
+      <select id="from"></select>
+    </div>
+
+    <button class="swap-btn" onclick="swapLocations()">⇅ החלף מוצא ויעד</button>
+
+    <div class="control-group">
+      <label class="search-label">🎯 יעד</label>
+      <select id="to"></select>
+    </div>
+
+    <button class="btn-calc" onclick="calculate()">🚀 חשב מסלול</button>
+  </div>
+
+  <div class="results-section" id="results">
+    <div class="success" id="success-msg">✅ המסלול חושב בהצלחה!</div>
+
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-val" id="time">—</span>
+        <span class="metric-lbl">⏱ זמן</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val" id="dist">—</span>
+        <span class="metric-lbl">📏 מרחק</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val" id="stops">—</span>
+        <span class="metric-lbl">🚩 עצירות</span>
+      </div>
+    </div>
+
+    <div class="map-container">
+      <svg id="map" class="map-svg" viewBox="0 0 680 350"></svg>
+    </div>
+
+    <div class="steps-container">
+      <div id="steps"></div>
+    </div>
+
+    <div class="feedback-section" id="feedback">
+      <div class="feedback-q">❓ האם המסלול היה מדויק ושימושי?</div>
+      <div class="feedback-buttons">
+        <button class="fb-btn thumbs-up" onclick="sendFeedback(true)">👍</button>
+        <button class="fb-btn thumbs-down" onclick="sendFeedback(false)">👎</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  CampusNav Pro • מכללת עזריאלי ירושלים • חקר ביצועים 2
+</footer>
+
+<script>
+const NODES = {
+  "17":{"name":"שער כניסה למכללה ראשי","floor":"0","type":"כניסה חיצונית","x":510,"y":310,"keywords":"כניסה שער ראשי כניסה קדמית"},
+  "9":{"name":"קפיטריה","floor":"0","type":"מזון","x":505,"y":195,"keywords":"קפה אוכל מסעדה ארוחה"},
+  "7":{"name":"מרכז שירות לסטודנט","floor":"0","type":"שירות","x":145,"y":100,"keywords":"שירות סטודנט ייעוץ מזכירות"},
+  "11":{"name":"מחשוב","floor":"0","type":"שירות","x":275,"y":90,"keywords":"מחשוב IT טכנולוגיה מעבדה"},
+  "8":{"name":"מרכז מודיעין","floor":"0","type":"שירות","x":285,"y":198,"keywords":"מודיעין מידע ספרייה קטלוג"},
+  "6":{"name":"פינת למידה 0","floor":"0","type":"אזור למידה","x":135,"y":202,"keywords":"פינת למידה אולם לימוד"},
+  "20":{"name":"שירותים 0","floor":"0","type":"צומת מרכזי","x":380,"y":198,"keywords":"שירותים אסלה"},
+  "28":{"name":"c102","floor":"1","type":"כיתה","x":200,"y":120,"keywords":"כיתה c102 הנדסת תוכנה"},
+  "30":{"name":"c104","floor":"1","type":"כיתה","x":300,"y":120,"keywords":"כיתה c104 אלגוריתמים מעבדה"},
+  "37":{"name":"c202","floor":"2","type":"כיתה","x":200,"y":80,"keywords":"כיתה c202 מעבדת רובוטיקה פינטו"},
+  "43":{"name":"c208","floor":"2","type":"כיתה","x":500,"y":80,"keywords":"כיתה c208 בינה מלאכותית AI"},
+  "47":{"name":"ספריה","floor":"3","type":"שירות","x":450,"y":40,"keywords":"ספריה ספרים קריאה מרכז מידע"},
+  "21":{"name":"שירותים 1","floor":"1","type":"שירות","x":380,"y":100,"keywords":"שירותים קומה 1"},
+  "22":{"name":"שירותים 2","floor":"2","type":"שירות","x":380,"y":50,"keywords":"שירותים קומה 2"},
+  "23":{"name":"שירותים 3","floor":"3","type":"שירות","x":380,"y":20,"keywords":"שירותים קומה 3"}
+};
+
+const ADJ_TIME = {
+  "17":[["9",30]],"9":[["17",30],["10",7],["20",25]],"7":[["6",8],["11",29]],"11":[["7",29]],
+  "8":[["20",17]],"6":[["20",13],["7",8]],"20":[["6",13],["8",17],["21",10]],
+  "21":[["20",10],["22",10],["28",13]],"22":[["21",10],["23",10],["37",13]],
+  "28":[["21",13]],"30":[["21",13]],"37":[["22",13]],"43":[["22",13]],
+  "47":[["23",8]],"23":[["47",8],["22",10]]
+};
+
+const ADJ_DIST = {
+  "17":[["9",35]],"9":[["17",35],["10",10],["20",25]],"7":[["6",9],["11",27]],"11":[["7",27]],
+  "8":[["20",8]],"6":[["20",16],["7",9]],"20":[["6",16],["8",8],["21",12]],
+  "21":[["20",12],["22",12],["28",8]],"22":[["21",12],["23",12],["37",8]],
+  "28":[["21",8]],"30":[["21",8]],"37":[["22",8]],"43":[["22",8]],
+  "47":[["23",10]],"23":[["47",10],["22",12]]
+};
+
+const ICONS = {
+  "לך ישר": "🚶‍♂️",
+  "עלה קומה": "⬆️",
+  "רד קומה": "⬇️",
+  "פנה ימינה": "↪️",
+  "פנה שמאלה": "↩️",
+  "קח מעלית": "🛗",
+  "הגעת": "📍",
+  "התחל": "🟢"
+};
+
+function populateSelects() {
+  const from = document.getElementById('from');
+  const to = document.getElementById('to');
+  Object.entries(NODES).forEach(([id, n]) => {
+    const opt1 = document.createElement('option');
+    const opt2 = document.createElement('option');
+    opt1.value = opt2.value = id;
+    opt1.textContent = opt2.textContent = n.name;
+    from.appendChild(opt1);
+    to.appendChild(opt2);
+  });
+  from.value = '17'; to.value = '47';
+}
+
+document.getElementById('search').addEventListener('input', function(e) {
+  const query = e.target.value.toLowerCase();
+  const dropdown = document.getElementById('results-dropdown');
+  
+  if (!query) { dropdown.classList.remove('show'); return; }
+  
+  const matches = Object.entries(NODES).filter(([id, n]) => {
+    const name = n.name.toLowerCase();
+    const keywords = n.keywords.toLowerCase();
+    return name.includes(query) || keywords.includes(query);
+  });
+  
+  if (matches.length === 0) { dropdown.classList.remove('show'); return; }
+  
+  dropdown.innerHTML = matches.map(([id, n]) => `
+    <div class="search-result-item" onclick="setSource('${id}')">
+      <div class="result-name">${n.name}</div>
+      <div class="result-type">${n.type} • קומה ${n.floor}</div>
+    </div>
+  `).join('');
+  dropdown.classList.add('show');
+});
+
+function setSource(id) {
+  document.getElementById('from').value = id;
+  document.getElementById('search').value = '';
+  document.getElementById('results-dropdown').classList.remove('show');
+}
+
+function swapLocations() {
+  const f = document.getElementById('from');
+  const t = document.getElementById('to');
+  const tmp = f.value;
+  f.value = t.value;
+  t.value = tmp;
+}
+
+function dijkstra(adj, src, tgt) {
+  const ids = Object.keys(NODES);
+  const dist = {}, prev = {};
+  const unvisited = new Set(ids);
+  ids.forEach(n => { dist[n] = Infinity; prev[n] = null; });
+  dist[src] = 0;
+  while (unvisited.size > 0) {
+    let u = null;
+    unvisited.forEach(n => { if (u === null || dist[n] < dist[u]) u = n; });
+    if (u === tgt || dist[u] === Infinity) break;
+    unvisited.delete(u);
+    (adj[u] || []).forEach(([nb, w]) => {
+      if (!unvisited.has(nb)) return;
+      const alt = dist[u] + w;
+      if (alt < dist[nb]) { dist[nb] = alt; prev[nb] = u; }
+    });
+  }
+  if (dist[tgt] === Infinity) return null;
+  const path = [];
+  let c = tgt;
+  while (c !== null) { path.unshift(c); c = prev[c]; }
+  return path[0] === src ? {path, total: dist[tgt]} : null;
+}
+
+function drawMap(path) {
+  const svg = document.getElementById('map');
+  svg.innerHTML = '<rect width="680" height="350" fill="#f1f5f9"/>';
+  
+  Object.entries(NODES).forEach(([id, n]) => {
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', n.x);
+    c.setAttribute('cy', n.y);
+    c.setAttribute('r', '5');
+    c.setAttribute('fill', path.includes(id) ? '#3b82f6' : '#d1d5db');
+    svg.appendChild(c);
+  });
+
+  for (let i = 0; i < path.length - 1; i++) {
+    const f = NODES[path[i]], t = NODES[path[i + 1]];
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', f.x);
+    line.setAttribute('y1', f.y);
+    line.setAttribute('x2', t.x);
+    line.setAttribute('y2', t.y);
+    line.setAttribute('stroke', '#22c55e');
+    line.setAttribute('stroke-width', '4');
+    line.setAttribute('opacity', '0.7');
+    svg.appendChild(line);
+  }
+
+  path.forEach((id, i) => {
+    const n = NODES[id];
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', n.x);
+    c.setAttribute('cy', n.y);
+    c.setAttribute('r', '7');
+    c.setAttribute('fill', i === 0 ? '#059669' : i === path.length - 1 ? '#dc2626' : '#3b82f6');
+    c.setAttribute('stroke', 'white');
+    c.setAttribute('stroke-width', '2');
+    svg.appendChild(c);
+  });
+}
+
+function calculate() {
+  const src = document.getElementById('from').value;
+  const tgt = document.getElementById('to').value;
+  const err = document.getElementById('error');
+  err.classList.remove('show');
+
+  if (src === tgt) { err.textContent = '📍 נקודת המוצא והיעד זהות!'; err.classList.add('show'); return; }
+
+  const res = dijkstra(ADJ_TIME, src, tgt);
+  if (!res) { err.textContent = '❌ אין מסלול'; err.classList.add('show'); return; }
+
+  let tt = 0, td = 0;
+  for (let i = 0; i < res.path.length - 1; i++) {
+    const a = res.path[i], b = res.path[i + 1];
+    const te = (ADJ_TIME[a] || []).find(x => x[0] === b);
+    const de = (ADJ_DIST[a] || []).find(x => x[0] === b);
+    if (te) tt += te[1];
+    if (de) td += de[1];
+  }
+
+  const m = Math.floor(tt / 60), s = Math.round(tt % 60);
+  document.getElementById('time').textContent = m > 0 ? `${m}:${String(s).padStart(2,'0')}` : `${s}״`;
+  document.getElementById('dist').textContent = `${td}מ׳`;
+  document.getElementById('stops').textContent = res.path.length - 1;
+
+  drawMap(res.path);
+
+  const st = document.getElementById('steps');
+  st.innerHTML = '';
+  res.path.forEach((id, i) => {
+    const n = NODES[id];
+    const isFirst = i === 0, isLast = i === res.path.length - 1;
+    const icon = isFirst ? '🟢' : isLast ? '📍' : '🔵';
+    
+    const div = document.createElement('div');
+    div.className = 'step';
+    div.innerHTML = `
+      <div class="step-icon">${icon}</div>
+      <div class="step-content">
+        <div class="step-name">${n.name}</div>
+        <div class="step-instr">קומה ${n.floor} • ${n.type}</div>
+      </div>`;
+    st.appendChild(div);
+  });
+
+  document.getElementById('results').classList.add('show');
+  document.getElementById('feedback').classList.add('show');
+  document.getElementById('success-msg').classList.add('show');
+  setTimeout(() => document.getElementById('success-msg').classList.remove('show'), 3000);
+}
+
+function sendFeedback(positive) {
+  const src = NODES[document.getElementById('from').value].name;
+  const tgt = NODES[document.getElementById('to').value].name;
+  const msg = positive ? '👍 תודה על המשוב!' : '👎 נבדוק איך לשפר';
+  alert(`${msg}\nמ: ${src}\nל: ${tgt}`);
+  document.getElementById('feedback').classList.remove('show');
+}
+
+populateSelects();
+</script>
+</body>
+</html>
