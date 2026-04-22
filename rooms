@@ -1,0 +1,11 @@
+room_id,room_name,floor,type,capacity,has_computers,quiet_zone,description
+c102,כיתה 102,1,classroom,30,no,no,כיתה רגילה עם לוח
+c104,כיתה 104,1,classroom,25,no,no,כיתה עם חלונות גדולים
+c202,חדר רובוטיקה,2,lab,20,yes,no,עם מחשבים ורובוטים
+c208,מעבדת בינה מלאכותית,2,lab,15,yes,no,עם GPU וחשמל חזק
+lib-study,אזור למידה בספריה,3,study,40,yes,yes,שקט מוחלט עם מחשבים
+lib-quiet,פינת קריאה,3,study,20,no,yes,ללא מכשור טקנולוגי
+cafe-corner,פינת קפה,0,social,30,no,no,עם שולחנות וחשמל
+it-lab,חדר מחשוב IT,1,lab,25,yes,no,תחנות עבודה מלאות
+math-room,חדר מתמטיקה,2,classroom,20,no,yes,שקט לעבודה אקדמית
+break-area,אזור הפסקה,0,social,50,yes,no,עם ספות ומטענים
