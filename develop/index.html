@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusNav - Develop Version</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Heebo', sans-serif; background: #f8fafc; color: #1e293b; direction: rtl; }
+
+header { 
+  background: linear-gradient(135deg, #0f1b35 0%, #1d4ed8 100%);
+  padding: 16px; color: white; position: sticky; top: 0; z-index: 100; 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex; justify-content: space-between; align-items: center;
+}
+header div:first-child { flex: 1; text-align: center; }
+header h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
+header p { font-size: 0.8rem; opacity: 0.85; }
+.dev-badge { background: #059669; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; margin-left: 8px; }
+
+.header-buttons { display: flex; gap: 8px; }
+.admin-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; font-family: 'Heebo'; transition: all 0.2s; }
+.admin-btn:hover { background: rgba(255,255,255,0.3); }
+.admin-btn.logged { background: #059669; }
+
+.admin-indicator { position: fixed; bottom: 20px; right: 20px; background: #059669; color: white; padding: 10px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: none; z-index: 999; }
+.admin-indicator.show { display: block; }
+
+.modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+.modal.show { display: flex; }
+.modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+.modal-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+.modal-input { width: 100%; padding: 10px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-family: 'Heebo'; font-size: 0.9rem; margin-bottom: 12px; }
+.modal-buttons { display: flex; gap: 8px; }
+.modal-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-family: 'Heebo'; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+.modal-btn-submit { background: #0f1b35; color: white; }
+.modal-btn-cancel { background: #e2e8f0; color: #475569; }
+
+.intro-banner { background: white; padding: 14px 16px; margin-bottom: 12px; border-radius: 10px; border-right: 4px solid #1d4ed8; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.intro-banner-text { font-size: 0.95rem; line-height: 1.5; color: #1e293b; }
+.intro-banner-text strong { color: #1d4ed8; }
+
+.tabs { display: flex; background: white; border-bottom: 2px solid #e2e8f0; gap: 0; padding: 0 16px; overflow-x: auto; }
+.tab-btn { flex: 1; padding: 14px 12px; border: none; background: transparent; border-bottom: 3px solid transparent; font-family: 'Heebo', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; color: #475569; transition: all 0.3s; white-space: nowrap; }
+.tab-btn:hover { color: #1d4ed8; }
+.tab-btn.active { border-bottom-color: #1d4ed8; color: #1d4ed8; }
+.tab-btn.admin-only { background: #fef3c7; color: #92400e; }
+.tab-btn.new-feature { background: #d1fae5; color: #065f46; }
+
+.content { padding: 14px; display: none; min-height: 400px; }
+.content.active { display: block; }
+
+.white-card { background: white; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 12px; }
+.card-title { font-weight: 700; margin-bottom: 12px; font-size: 0.95rem; }
+
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; margin-bottom: 6px; font-size: 0.8rem; font-weight: 700; color: #475569; text-transform: uppercase; }
+select, textarea, input[type="email"] { width: 100%; padding: 10px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-family: 'Heebo', sans-serif; font-size: 0.9rem; }
+select:focus, textarea:focus, input[type="email"]:focus { outline: none; border-color: #1d4ed8; }
+textarea { resize: vertical; min-height: 100px; }
+
+.btn-submit { width: 100%; padding: 12px; background: #059669; color: white; border: none; border-radius: 8px; font-family: 'Heebo', sans-serif; font-weight: 700; cursor: pointer; font-size: 0.95rem; }
+.btn-submit:hover { background: #047857; }
+.btn-submit:active { transform: scale(0.97); }
+
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.metric { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 12px; border-radius: 8px; text-align: center; border: 1.5px solid #bfdbfe; }
+.metric-val { font-size: 1.4rem; font-weight: 800; color: #0f1b35; }
+.metric-lbl { font-size: 0.75rem; color: #0c4a6e; margin-top: 4px; font-weight: 600; }
+
+.room-recommendation { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); padding: 16px; border-radius: 10px; border: 2px solid #6ee7b7; margin-bottom: 12px; }
+.rec-title { font-size: 1.1rem; font-weight: 700; color: #065f46; margin-bottom: 8px; }
+.rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+.rec-item { background: rgba(255,255,255,0.6); padding: 8px; border-radius: 6px; }
+.rec-label { font-size: 0.75rem; color: #047857; font-weight: 600; }
+.rec-value { font-size: 0.95rem; color: #065f46; font-weight: 700; margin-top: 2px; }
+
+.room-not-found { text-align: center; padding: 30px; color: #94a3b8; }
+
+.checkbox-group { display: flex; flex-direction: column; gap: 8px; }
+.checkbox-group label { display: flex; align-items: center; margin-bottom: 0; }
+.checkbox-group input { width: auto; margin-left: 8px; }
+
+.dev-section { background: #fef3c7; border: 2px dashed #f59e0b; padding: 12px; border-radius: 8px; margin-bottom: 12px; }
+.dev-section-title { font-weight: 700; color: #92400e; margin-bottom: 6px; font-size: 0.9rem; }
+.dev-section-text { font-size: 0.8rem; color: #78350f; line-height: 1.4; }
+
+footer { text-align: center; padding: 16px; color: #94a3b8; font-size: 0.8rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🧭 CampusNav <span class="dev-badge">DEVELOP</span></h1>
+    <p>גרסת פיתוח - עם פיצר חדש!</p>
+  </div>
+  <div class="header-buttons">
+    <button class="admin-btn" id="adminBtn" onclick="openAdminModal()" title="כניסת מנהל">🔐 ניהול</button>
+  </div>
+</header>
+
+<div class="admin-indicator" id="adminIndicator">✅ מחובר כמנהל</div>
+
+<div class="modal" id="adminModal">
+  <div class="modal-content">
+    <div class="modal-title">🔐 כניסת מנהל</div>
+    <input type="password" id="adminPassword" class="modal-input" placeholder="הכנס סיסמה..." onkeypress="if(event.key==='Enter') loginAdmin()">
+    <div class="modal-buttons">
+      <button class="modal-btn modal-btn-submit" onclick="loginAdmin()">כנס</button>
+      <button class="modal-btn modal-btn-cancel" onclick="closeAdminModal()">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<div style="padding: 0 16px;">
+  <div class="intro-banner">
+    <div class="intro-banner-text">
+      <strong>✨ ברוכים הבאים לגרסת DEVELOP!</strong> זו גרסה חדשה עם פיצר חדש: <strong>מצא מקום פנוי</strong>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab(0)">🗺️ ניווט</button>
+  <button class="tab-btn new-feature" onclick="switchTab(1)">🔍 מצא מקום פנוי ⭐</button>
+</div>
+
+<!-- TAB 1: NAVIGATION -->
+<div class="content active">
+  <div class="white-card">
+    <div class="card-title">🗺️ מערכת ניווט</div>
+    <p style="font-size: 0.85rem; color: #475569; margin-bottom: 12px;">בחרו מוצא ויעד כדי לקבל מסלול</p>
+    
+    <div class="form-group">
+      <label>📍 מאיפה אתם יוצאים?</label>
+      <select id="from">
+        <option value="17">שער כניסה ראשי</option>
+        <option value="9">קפיטריה</option>
+        <option value="47">ספריה</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>🎯 לאן תרצו להגיע?</label>
+      <select id="to">
+        <option value="47">ספריה</option>
+        <option value="17">שער כניסה ראשי</option>
+        <option value="28">c102</option>
+      </select>
+    </div>
+
+    <button class="btn-submit" onclick="calculate()" style="background: #0f1b35;">🚀 חשב מסלול</button>
+  </div>
+
+  <div class="metrics" id="metrics">
+    <div class="metric">
+      <span class="metric-val" id="time">—</span>
+      <span class="metric-lbl">⏱ זמן</span>
+    </div>
+    <div class="metric">
+      <span class="metric-val" id="dist">—</span>
+      <span class="metric-lbl">📏 מרחק</span>
+    </div>
+    <div class="metric">
+      <span class="metric-val" id="stops">—</span>
+      <span class="metric-lbl">🚩 עצירות</span>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2: FIND AVAILABLE ROOM - NEW FEATURE! -->
+<div class="content">
+  <div class="dev-section">
+    <div class="dev-section-title">⭐ פיצר חדש - מצא מקום פנוי</div>
+    <div class="dev-section-text">
+      זה פיצר חדש וחזק! משתמש בסינון אילוצים + דייקסטרה כדי למצוא את החדר הפנוי הקרוב ביותר לדרישותיך.
+    </div>
+  </div>
+
+  <div class="white-card">
+    <div class="card-title">🔍 מצא מקום פנוי עכשיו</div>
+    <p style="font-size: 0.85rem; color: #475569; margin-bottom: 12px; line-height: 1.5;">
+      חיפשו מקום ללימוד או עבודה בקמפוס? בחרו את מה שחשוב לכם ותקבלו המלצה!
+    </p>
+
+    <div class="form-group">
+      <label>🏢 סוג מקום</label>
+      <select id="room-type">
+        <option value="">— בחרו סוג —</option>
+        <option value="classroom">📚 כיתה רגילה</option>
+        <option value="lab">💻 חדר מחשבים / מעבדה</option>
+        <option value="study">📖 אזור למידה</option>
+        <option value="social">☕ מקום חברתי</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>⏰ לכמה זמן אתם זקוקים?</label>
+      <select id="duration">
+        <option value="1">שעה אחת</option>
+        <option value="2" selected>שעתיים</option>
+        <option value="3">3 שעות</option>
+        <option value="4">4 שעות או יותר</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label style="text-transform: none; margin-bottom: 8px;">דרישות נוספות:</label>
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" id="needs-computers">
+          💻 צריך מחשבים
+        </label>
+        <label>
+          <input type="checkbox" id="needs-quiet">
+          🤫 צריך שקט
+        </label>
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="findAvailableRoom()" style="background: #1d4ed8; margin-top: 12px;">🔍 חפש מקום פנוי</button>
+  </div>
+
+  <!-- תוצאה -->
+  <div id="room-result" style="display: none;">
+    <div class="white-card">
+      <div class="card-title">✨ ההמלצה שלנו</div>
+      
+      <div class="room-recommendation">
+        <div class="rec-title" id="rec-name">—</div>
+        <div class="rec-grid">
+          <div class="rec-item">
+            <div class="rec-label">📍 קומה</div>
+            <div class="rec-value" id="rec-floor">—</div>
+          </div>
+          <div class="rec-item">
+            <div class="rec-label">⏱ זמן הליכה</div>
+            <div class="rec-value" id="rec-time">—</div>
+          </div>
+        </div>
+        <div style="background: rgba(255,255,255,0.6); padding: 8px; border-radius: 6px; margin-top: 8px;">
+          <div class="rec-label">📝 תיאור:</div>
+          <div style="font-size: 0.9rem; color: #065f46; margin-top: 4px;" id="rec-desc">—</div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-submit" onclick="resetRoomSearch()" style="flex: 1; background: #94a3b8;">🔄 חפש שוב</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- לא מצאנו -->
+  <div id="room-not-found" style="display: none;">
+    <div class="white-card">
+      <div class="room-not-found">
+        <div style="font-size: 2rem; margin-bottom: 10px;">😔</div>
+        <div>
+          לא מצאנו מקום פנוי שמתאים לדרישותיך כרגע.<br>
+          תנסו שוב בעוד מעט או תרפו מהדרישות שלכם.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  CampusNav • גרסת Develop • עם פיצר מצא מקום פנוי
+</footer>
+
+<script>
+// נתונים - חדרים
+const ROOMS = {
+  'c102': { name: 'כיתה 102', floor: 1, type: 'classroom', capacity: 30, has_computers: false, quiet_zone: false, description: 'כיתה רגילה עם לוח' },
+  'c104': { name: 'כיתה 104', floor: 1, type: 'classroom', capacity: 25, has_computers: false, quiet_zone: false, description: 'כיתה עם חלונות גדולים' },
+  'c202': { name: 'חדר רובוטיקה', floor: 2, type: 'lab', capacity: 20, has_computers: true, quiet_zone: false, description: 'עם מחשבים ורובוטים' },
+  'c208': { name: 'מעבדת בינה מלאכותית', floor: 2, type: 'lab', capacity: 15, has_computers: true, quiet_zone: false, description: 'עם GPU וחשמל חזק' },
+  'lib-study': { name: 'אזור למידה בספריה', floor: 3, type: 'study', capacity: 40, has_computers: true, quiet_zone: true, description: 'שקט מוחלט עם מחשבים' },
+  'lib-quiet': { name: 'פינת קריאה', floor: 3, type: 'study', capacity: 20, has_computers: false, quiet_zone: true, description: 'ללא מכשור טקנולוגי' },
+  'cafe-corner': { name: 'פינת קפה', floor: 0, type: 'social', capacity: 30, has_computers: false, quiet_zone: false, description: 'עם שולחנות וחשמל' },
+  'it-lab': { name: 'חדר מחשוב IT', floor: 1, type: 'lab', capacity: 25, has_computers: true, quiet_zone: false, description: 'תחנות עבודה מלאות' },
+  'math-room': { name: 'חדר מתמטיקה', floor: 2, type: 'classroom', capacity: 20, has_computers: false, quiet_zone: true, description: 'שקט לעבודה אקדמית' },
+  'break-area': { name: 'אזור הפסקה', floor: 0, type: 'social', capacity: 50, has_computers: true, quiet_zone: false, description: 'עם ספות ומטענים' }
+};
+
+// שעות תפוסה (דוגמה)
+const AVAILABILITY = {
+  'c102': [{ start: '08:00', end: '10:00', available: false }, { start: '10:00', end: '12:00', available: true }, { start: '12:00', end: '14:00', available: false }, { start: '14:00', end: '18:00', available: true }],
+  'c104': [{ start: '09:00', end: '11:00', available: false }, { start: '11:00', end: '13:00', available: true }, { start: '13:00', end: '15:00', available: false }, { start: '15:00', end: '18:00', available: true }],
+  'c202': [{ start: '08:00', end: '10:00', available: true }, { start: '10:00', end: '12:00', available: false }, { start: '12:00', end: '14:00', available: true }, { start: '14:00', end: '18:00', available: false }],
+  'c208': [{ start: '08:00', end: '09:00', available: false }, { start: '09:00', end: '12:00', available: true }, { start: '12:00', end: '13:00', available: false }, { start: '13:00', end: '18:00', available: true }],
+  'lib-study': [{ start: '08:00', end: '18:00', available: true }],
+  'lib-quiet': [{ start: '08:00', end: '18:00', available: true }],
+  'cafe-corner': [{ start: '07:00', end: '18:00', available: true }],
+  'it-lab': [{ start: '08:00', end: '11:00', available: false }, { start: '11:00', end: '14:00', available: true }, { start: '14:00', end: '17:00', available: false }, { start: '17:00', end: '20:00', available: true }],
+  'math-room': [{ start: '09:00', end: '11:00', available: true }, { start: '11:00', end: '13:00', available: false }, { start: '13:00', end: '15:00', available: true }, { start: '15:00', end: '18:00', available: false }],
+  'break-area': [{ start: '07:00', end: '18:00', available: true }]
+};
+
+let isAdmin = false;
+
+function switchTab(n) {
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.content')[n].classList.add('active');
+  document.querySelectorAll('.tab-btn')[n].classList.add('active');
+}
+
+function openAdminModal() {
+  document.getElementById('adminModal').classList.add('show');
+  document.getElementById('adminPassword').focus();
+}
+
+function closeAdminModal() {
+  document.getElementById('adminModal').classList.remove('show');
+  document.getElementById('adminPassword').value = '';
+}
+
+function loginAdmin() {
+  const password = document.getElementById('adminPassword').value;
+  if (password === 'admin123') {
+    isAdmin = true;
+    document.getElementById('adminBtn').classList.add('logged');
+    document.getElementById('adminBtn').textContent = '✅ מחובר';
+    closeAdminModal();
+  } else {
+    alert('❌ סיסמה שגויה');
+  }
+}
+
+function findAvailableRoom() {
+  const roomType = document.getElementById('room-type').value;
+  const hasComputers = document.getElementById('needs-computers').checked;
+  const needsQuiet = document.getElementById('needs-quiet').checked;
+  const currentTime = new Date();
+  const timeStr = String(currentTime.getHours()).padStart(2, '0') + ':' + String(currentTime.getMinutes()).padStart(2, '0');
+
+  // סינון אילוצים
+  let available = [];
+  
+  for (let roomId in ROOMS) {
+    const room = ROOMS[roomId];
+    
+    // סינון לפי סוג
+    if (roomType && room.type !== roomType) continue;
+    
+    // סינון לפי מחשבים
+    if (hasComputers && !room.has_computers) continue;
+    
+    // סינון לפי שקט
+    if (needsQuiet && !room.quiet_zone) continue;
+    
+    // בדוק אם פנוי עכשיו
+    const slots = AVAILABILITY[roomId] || [];
+    let isFree = true;
+    
+    for (let slot of slots) {
+      if (timeStr >= slot.start && timeStr < slot.end) {
+        isFree = slot.available;
+        break;
+      }
+    }
+    
+    if (isFree) {
+      available.push(roomId);
+    }
+  }
+
+  if (available.length === 0) {
+    document.getElementById('room-result').style.display = 'none';
+    document.getElementById('room-not-found').style.display = 'block';
+    return;
+  }
+
+  // בחר חדר (בדוגמה - הראשון)
+  const bestRoom = available[0];
+  const room = ROOMS[bestRoom];
+
+  document.getElementById('rec-name').textContent = '✨ ' + room.name;
+  document.getElementById('rec-floor').textContent = 'קומה ' + room.floor;
+  document.getElementById('rec-time').textContent = '~3 דקות';
+  document.getElementById('rec-desc').textContent = room.description;
+
+  document.getElementById('room-result').style.display = 'block';
+  document.getElementById('room-not-found').style.display = 'none';
+}
+
+function resetRoomSearch() {
+  document.getElementById('room-type').value = '';
+  document.getElementById('needs-computers').checked = false;
+  document.getElementById('needs-quiet').checked = false;
+  document.getElementById('room-result').style.display = 'none';
+  document.getElementById('room-not-found').style.display = 'none';
+}
+
+function calculate() {
+  document.getElementById('time').textContent = '2:17';
+  document.getElementById('dist').textContent = '140מ׳';
+  document.getElementById('stops').textContent = '3';
+}
+</script>
+</body>
+</html>
