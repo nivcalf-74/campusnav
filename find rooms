@@ -1,0 +1,157 @@
+import csv
+from datetime import datetime
+import networkx as nx
+
+class AvailableRoomFinder:
+    def __init__(self, rooms_file, availability_file, campus_graph):
+        self.rooms = {}
+        self.availability = {}
+        self.campus_graph = campus_graph
+        self.load_rooms(rooms_file)
+        self.load_availability(availability_file)
+    
+    def load_rooms(self, filename):
+        """טען רשימת חדרים"""
+        with open(filename, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                room_id = row['room_id']
+                self.rooms[room_id] = {
+                    'name': row['room_name'],
+                    'floor': int(row['floor']),
+                    'type': row['type'],
+                    'capacity': int(row['capacity']),
+                    'has_computers': row['has_computers'].lower() == 'yes',
+                    'quiet_zone': row['quiet_zone'].lower() == 'yes',
+                    'description': row['description']
+                }
+    
+    def load_availability(self, filename):
+        """טען שעות תפוסה"""
+        with open(filename, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                room_id = row['room_id']
+                if room_id not in self.availability:
+                    self.availability[room_id] = []
+                
+                self.availability[room_id].append({
+                    'day': row['day'],
+                    'start': row['start_time'],
+                    'end': row['end_time'],
+                    'available': row['available'].lower() == 'yes'
+                })
+    
+    def is_room_available_at_time(self, room_id, current_time):
+        """בדוק אם חדר פנוי כרגע"""
+        if room_id not in self.availability:
+            return True
+        
+        # בדוק כל זמן תפוסה
+        for slot in self.availability[room_id]:
+            if slot['day'] == 'sunday':  # בשביל עכשיו נניח יום א'
+                start = datetime.strptime(slot['start'], '%H:%M').time()
+                end = datetime.strptime(slot['end'], '%H:%M').time()
+                current = datetime.strptime(current_time, '%H:%M').time()
+                
+                if start <= current < end:
+                    return slot['available']
+        
+        return True
+    
+    def find_available_rooms(self, current_time, room_type=None, has_computers=None, quiet=None):
+        """מצא חדרים פנויים לפי קריטריונים"""
+        available = []
+        
+        for room_id, room_info in self.rooms.items():
+            # בדוק אם פנוי בשעה זו
+            if not self.is_room_available_at_time(room_id, current_time):
+                continue
+            
+            # סינון לפי סוג חדר
+            if room_type and room_info['type'] != room_type:
+                continue
+            
+            # סינון לפי מחשבים
+            if has_computers is not None and room_info['has_computers'] != has_computers:
+                continue
+            
+            # סינון לפי שקט
+            if quiet is not None and room_info['quiet_zone'] != quiet:
+                continue
+            
+            available.append(room_id)
+        
+        return available
+    
+    def find_closest_room(self, current_location, current_time, room_type=None, 
+                         has_computers=None, quiet=None):
+        """מצא את החדר הפנוי הקרוב ביותר"""
+        
+        # מצא חדרים פנויים
+        available_rooms = self.find_available_rooms(
+            current_time, room_type, has_computers, quiet
+        )
+        
+        if not available_rooms:
+            return None, None
+        
+        # מצא את הקרוב ביותר (דייקסטרה)
+        closest_room = None
+        min_distance = float('inf')
+        
+        for room_id in available_rooms:
+            try:
+                # בדוק אם יש מסלול
+                if current_location in self.campus_graph.nodes and room_id in self.campus_graph.nodes:
+                    distance = nx.shortest_path_length(
+                        self.campus_graph, 
+                        current_location, 
+                        room_id, 
+                        weight='time'
+                    )
+                    
+                    if distance < min_distance:
+                        min_distance = distance
+                        closest_room = room_id
+            except nx.NetworkXNoPath:
+                continue
+        
+        return closest_room, min_distance
+    
+    def get_room_info(self, room_id):
+        """קבל מידע מלא על חדר"""
+        if room_id in self.rooms:
+            return self.rooms[room_id]
+        return None
+    
+    def get_recommendations(self, current_location, current_time, preferences):
+        """קבל המלצות מותאמות אישית"""
+        
+        room_type = preferences.get('type')
+        has_computers = preferences.get('has_computers')
+        quiet = preferences.get('quiet')
+        
+        # מצא את החדר הטוב ביותר
+        best_room, distance = self.find_closest_room(
+            current_location,
+            current_time,
+            room_type,
+            has_computers,
+            quiet
+        )
+        
+        if best_room:
+            return {
+                'room_id': best_room,
+                'room_info': self.get_room_info(best_room),
+                'distance': distance,
+                'walking_time_minutes': round(distance / 60)  # בהנחה שניתוח בשניות
+            }
+        
+        return None
+
+# דוגמה
+if __name__ == "__main__":
+    # צריך להעביר גרף קמפוס
+    print("✅ מודול מצא חדרים פנויים - מוכן לשימוש")
